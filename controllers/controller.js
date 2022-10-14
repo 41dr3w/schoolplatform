@@ -1,14 +1,13 @@
 const {Student} = require("../models/student")
 const {User} = require("../models/user")
 const bcrypt = require("bcryptjs")
+const axios = require("axios")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
 //const generateToken = require("../helpers/generateJWT")
 
 
-
 //vistas
-
 
 
 //post C-reate
@@ -77,44 +76,49 @@ const loginUsuario = async (req, res) =>{
         res.status(501).json({error})
     }
 }
-/*const loginToken = async (req, res) =>{
-    try {
-        const err = validationResult(req)
-        if(err.isEmpty()){
-
-            const usuario = await User.findOne({email: req.body.email})
-            res.status(201).json({msg:"product updated"})
-        
-            if(usuario==null){  //valida si el usuario existe en la base de datos.
-                res.json({msg:"Contraseña o Email Incorrectos"}) //agregar codigo de estado
-            }    
-            
-            if(bcrypt.compareSync(req.body.password, usuario.password)){ //compara con la contraseña guardada en la  base dedatos
-                res.json({msg: "Contraseña o Email Incorrectos"})
-            }
-
-            const token = await generateToken({id:usuario_id,email:_email})
-                _id: usuario._id,
-                name: usuario.name
-            }
-            req.session.user = user
-
-            //checkbox           //si el usuario precisa mantener la sesion activa, guarda en cookie la sesion del usuario, para que al cerrar no se cierre
-            if(req.body.remember){ //esto es por si se tiene un checkbox  
-                res.cookie("sessionDelUsuario",req.session.user, {maxAge:60000*60*24})
-            }
-            res.json({email: req.body.email,token})
-        } else {
-            res.status(501).json(err)
-        }
-    } catch(error) {
-        res.json({error})
-    }
-}*/
-
 
 
 //gets R-ead
+const savewithHash = async (req,res) =>{
+    let salt = bcrypt.genSaltSync(10)
+    let hash = bcrypt.hashSync(req.body.pass, salt)
+    let comparation = bcrypt.compareSync(req.body.pass, hash)
+    let comparation2 = bcrypt.compareSync("987654321", hash)
+    res.json({hash, comparation, comparation2})
+}
+const consultApi = async (req,res) => { //consume la api de pokemon y la trae 
+    try{
+        const respuesta = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto")
+        res.status(200).json({status: respuesta.status,data:respuesta.data})
+    }catch(error){
+        res.status(404).json({status: error.response.status, 
+                        data:error.response.data})
+    }
+}
+const consultAxios1 = async (req,res) => { //consumir la api propia
+    try{
+        const respuesta = await axios.get("http://localhost:8080/see")
+        res.status(200).json({status: respuesta.status,data:respuesta.data})
+    }catch(error){
+        res.status(404).json({status: error.response.status, 
+                        data:error.response.data})
+    }
+}
+const consultAxios2 = async (req,res) => {  //´usando ruta post con axios, 
+    try{
+        const respuesta = await axios.post("http://localhost:8080/create",{first_name:req.body.first_name,
+                                                                        second_name:req.body.second_name,
+                                                                        age:req.body.age,
+                                                                        dni:req.body.dni,
+                                                                        nationality:req.body.nationality}) //"https://pokeapi.co/api/v2/pokemon/ditto"
+        res.status(200).json({status: respuesta.status,data:respuesta.data})
+    }catch(error){
+        res.status(404).json({status: error.response.status, 
+                        data:error.response.data})
+    }
+}
+
+
 const vistaGeneral = async (req, res) => {
     const item = await Student.find()
     res.status(200).json({item})
@@ -195,5 +199,5 @@ const result = await Student.deleteMany({});
 
 
 
-module.exports = {/*sendToken,logOut,*/loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
+module.exports = {/*sendToken,logOut,*/savewithHash,consultApi,consultAxios1,consultAxios2,loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
  

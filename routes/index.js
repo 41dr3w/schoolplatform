@@ -1,7 +1,7 @@
 
 const express = require("express")
 const router = express.Router()
-const {/*logOut,sendToken,*/loginUsuario,eliminarCookie,verCookie,cerrarSession,verSession,crearSession,vistaGeneral, crearItem, vistaUnitaria, busquedaUnitaria, editarItem,eliminarItem,deleteAll} = require("../controllers/controller")
+const {savewithHash,consultApi,consultAxios1,consultAxios2,loginUsuario,eliminarCookie,verCookie,cerrarSession,verSession,crearSession,vistaGeneral, crearItem, vistaUnitaria, busquedaUnitaria, editarItem,eliminarItem,deleteAll} = require("../controllers/controller")
 const {validar} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
@@ -15,6 +15,11 @@ router.get('/see/:id',validar,vistaUnitaria)
 router.get('/search/:name',busquedaUnitaria)
 router.get('/seesession',auth,verSession) //auth (middleware) 
 router.get('/seecookie',verCookie)
+
+router.get('/pass',savewithHash)
+router.get('/axios/api',consultApi)
+router.get('/axios/get-auto',consultAxios1)
+router.post('/axios/post-auto',consultAxios2)
 
 
 //router.get('/sendtoken',sendToken)
