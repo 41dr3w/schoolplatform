@@ -25,23 +25,23 @@ router.get('/seecookie',verCookie)
 
 
 //post
-router.post('/createsession',[check("first_name").not().isEmpty().withMessage("please fill the name"),
+router.post('/createsession',/*[check("first_name").not().isEmpty().withMessage("please fill the name"),
                               check("second_name").not().isEmpty().withMessage("please fill the age"),
                               check("dni").not().isEmpty().withMessage("please fill the dni"),  
                               check("age").not().isEmpty().withMessage("please fill the dni"),  
                               check("nationality").not().isEmpty().withMessage("please fill the nationality"),  
-],crearSession)
+],*/crearSession)
 
-router.post('/create',[check("first_name").not().isEmpty().withMessage("please fill the name"),
+router.post('/create',/*[check("first_name").not().isEmpty().withMessage("please fill the name"),
                        check("second_name").not().isEmpty().withMessage("please fill the age"),
                        check("dni").not().isEmpty().withMessage("please fill the dni"),  
                        check("age").not().isEmpty().withMessage("please fill the dni"),  
                        check("nationality").not().isEmpty().withMessage("please fill the nationality"),
-],crearItem)
+],*/crearItem)
 
-router.post('/login',[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
+router.post('/login',/*[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                       check("password").not().isEmpty().withMessage("please fill the password")
-],loginUsuario)
+],*/loginUsuario)
 
 /*router.post('/logintoken',[
     check("email").not().isEmpty().withMessage("Falta ingresar Mail").isEmail().withMessage("Mail Inexistente"),

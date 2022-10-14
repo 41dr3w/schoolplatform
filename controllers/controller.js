@@ -16,7 +16,7 @@ const crearItem = async (req,res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new Student(req.body)
+            const item = new User(req.body)
             await item.save()
             res.status(201).json({item})
         }
@@ -31,7 +31,7 @@ const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new Student(req.body)
+            const item = new User(req.body)
             await item.save()
             res.cookie("ItemInSession",item.nationality,{maxAge: 60000})
             req.session.item = item
@@ -113,18 +113,17 @@ const loginUsuario = async (req, res) =>{
 }*/
 
 
-
 //gets R-ead
 const vistaGeneral = async (req, res) => {
-    const item = await Student.find()
+    const item = await User.find()
     res.status(200).json({item})
 }
 const vistaUnitaria = async (req, res) => {
-    const item = await Student.findById(req.params.id)
+    const item = await User.findById(req.params.id)
     res.status(200).json({item})
 }
 const busquedaUnitaria = async (req, res) => {
-    const item = await Student.findOne({name: req.params.name})
+    const item = await User.findOne({name: req.params.name})
     res.status(200).json({item})
 }
 const verSession = async (req,res) =>{
@@ -146,7 +145,7 @@ const editarItem = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            await Student.findByIdAndUpdate(req.params.id, req.body)
+            await User.findByIdAndUpdate(req.params.id, req.body)
             res.status(201).json({msg:"info updated"})
         }
         else {
@@ -168,7 +167,7 @@ const eliminarItem = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            item = await Student.findByIdAndDelete(req.params.id)
+            item = await User.findByIdAndDelete(req.params.id)
             res.status(201).json({msg:"student deleted", item})
         } else {
             res.status(501).json(err)
@@ -180,20 +179,20 @@ const eliminarItem = async(req, res) => {
 const eliminarCookie = async(req, res) => {
     res.clearCookie("ItemInSession") //cuidado que arriba esta con otro nombre
     res.json({msg:'cookie deleted'})
-}/*
-const logOut = (req, res) => {
+}
+/*const logOut = (req, res) => {
     res.clearCookie("sessionDelUsuario") //cuidado que tiene otro nombre arriba
     req.session.destroy()
     res.json({msg:"Session Closed"}) 
 }*/
 const deleteAll = async(req, res) => {
 //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
-const result = await Student.deleteMany({});
+const result = await User.deleteMany({});
     res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
 }
 
 
 
 
-module.exports = {/*sendToken,logOut,*/loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
+module.exports = {loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
  
