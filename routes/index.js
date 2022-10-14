@@ -21,9 +21,6 @@ router.get('/seecookie',verCookie)
 //router.get('verifytoken',validarToken)
 
 
-
-
-
 //post
 router.post('/createsession',[check("first_name").not().isEmpty().withMessage("please fill the name"),
                               check("second_name").not().isEmpty().withMessage("please fill the age"),
@@ -39,10 +36,10 @@ router.post('/create',[check("first_name").not().isEmpty().withMessage("please f
                        check("nationality").not().isEmpty().withMessage("please fill the nationality"),
 ],crearItem)
 
-router.post('/login',[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
+router.post('/login',[check("user").not().isEmpty().withMessage("please fill the user"),
+                      check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                       check("password").not().isEmpty().withMessage("please fill the password")
 ],loginUsuario)
-
 /*router.post('/logintoken',[
     check("email").not().isEmpty().withMessage("Falta ingresar Mail").isEmail().withMessage("Mail Inexistente"),
     check("password").not().isEmpty().withMessage("Falta Mail")
@@ -66,7 +63,7 @@ router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage(
 router.delete('/delete/session',cerrarSession)
 router.delete('/delete/:id',validar,eliminarItem)
 router.delete('/deletecollection',deleteAll)
-router.delete('/deletecookie',eliminarCookie)
+router.delete('/delete/cookie',eliminarCookie)
 //router.delete('/logout',logOut)
 
 module.exports = router  
