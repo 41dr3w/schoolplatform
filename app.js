@@ -13,13 +13,6 @@ const { conect } = require("./db/db")
 app.use(logger("dev"))
 app.use(express.json())
 app.use(cors())
-app.use(cookieParser())  //si entro en mi pagina y ya quiero entrar a mi usuario, tiene que guardarse la sesion en cookie
-app.use(session({     //si quiero mantener un usuario en sesion, se guarda la sesion en cookie
-    secret: process.env.SESSION_SECRET, //se puede hashear esta palabra secret
-    resave: true,
-    saveUninitialized: true
-}))
-
 
 app.use('/',indexRouter)
 conect()
