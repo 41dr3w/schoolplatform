@@ -5,11 +5,7 @@ const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
 //const generateToken = require("../helpers/generateJWT")
 
-
-
 //vistas
-
-
 
 //post C-reate
 const crearItem = async (req,res) => {
@@ -45,38 +41,9 @@ const crearSession = async (req,res) =>{
         res.status(501).json({error})
     }   
 }
-const loginUsuario = async (req, res) =>{
-    try {
-        const err = validationResult(req)
-        if(err.isEmpty()){
 
-            const usuario = await User.findOne({email: req.body.email})
-        
-            if(usuario==null){  //valida si el usuario existe en la base de datos en base a la busqueda anterior atraves del email.
-                res.status(201).res.json({msg:"Password or email incorrect"}) //agregar codigo de estado
-            }    
-            if(!bcrypt.compareSync(req.body.password, usuario.password)){ //compara con la contraseña guardada en la  base dedatos
-                res.status(201).res.json({msg:"Password or email incorrect"})
-            }
 
-            const user = {
-                _id: usuario._id,
-                name: usuario.name
-            }
-            req.session.user = user
 
-            //checkbox           //si el usuario precisa mantener la sesion activa, guarda en cookie la sesion del usuario, para que al cerrar no se cierre
-            if(req.body.remember){ //esto es por si se tiene un checkbox seleccionado como true para guardar en sesión usuario y contraseña. es decir, en cookie  
-                res.cookie("sessionDelUsuario", req.session.user, {maxAge:60000*60*24})
-            }
-            res.json({msg:"User Logged"})
-        } else {
-            res.status(501).json(err)
-        }
-    } catch(error) {
-        res.status(501).json({error})
-    }
-}
 /*const loginToken = async (req, res) =>{
     try {
         const err = validationResult(req)
@@ -194,5 +161,5 @@ const result = await User.deleteMany({});
 
 
 
-module.exports = {loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
+module.exports = {eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
  
