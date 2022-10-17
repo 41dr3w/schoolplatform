@@ -48,7 +48,7 @@ const loginUsuario = async (req,res) =>{
         if(err.isEmpty()){
             const usuario = await User.findOne({email:req.body.email})
             
-            if(usuario == null){
+            if(usuario === null){
                 res.json({msg:"Mail o Contraseña incorrecta"})
             }
 
@@ -69,7 +69,7 @@ const loginUsuario = async (req,res) =>{
             res.status(501).json(err)
         }
     } catch (error) {
-        res.json(error)
+        res.status(501).json(error)
     }
 }
 
