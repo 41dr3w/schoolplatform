@@ -10,9 +10,12 @@ const { default: mongoose } = require("mongoose")
 //post C-reate
 const crearItem = async (req,res) => {
     try {
+
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new User(req.body)
+            let salt = bcrypt.genSaltSync(10)
+            let hash = bcrypt.hashSync(req.body.password,salt)
+            const item = new User({name:req.body.name,email:req.body.email,password:hash})
             await item.save()
             res.status(201).json({item})
         }
@@ -23,6 +26,15 @@ const crearItem = async (req,res) => {
         res.status(501).json({error})
     }
 }
+
+const savewithHash = async (req,res) =>{
+    let salt = bcrypt.genSaltSync(10)
+    let hash = bcrypt.hashSync(req.body.password, salt)
+    let comparation = bcrypt.compareSync(req.body.password, hash)
+    let comparation2 = bcrypt.compareSync("987654321", hash)
+    res.json({hash, comparation, comparation2})
+}
+
 const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
@@ -48,13 +60,14 @@ const loginUsuario = async (req,res) =>{
         if(err.isEmpty()){
             const usuario = await User.findOne({email:req.body.email})
             
-            if(usuario === null){
-                res.json({msg:"Mail o Contraseña incorrecta"})
-            }
+           /*if(usuario === null){
+               res.json({msg:"Mail o Contraseña incorrecta"})
+            }*/
 
-            if(!bcrypt.compareSync(req.body.password,usuario.password)){
+            if(bcrypt.compareSync(req.body.password,usuario.password)){ 
                 res.json({msg:"Mail o Contraseña incorrecta"})
             }
+               /* 
             const user = {
                 _id: personalbar._id,
                 name: usuario.name
@@ -62,7 +75,7 @@ const loginUsuario = async (req,res) =>{
             req.session.user = user
             if(req.body.remember){
                 res.cookie("sessiondelusuario",req.session.user,{maxAge:60000*60*24})
-            }
+            }*/
             res.json({msg:"usuario logeado"})
         }
         else {
