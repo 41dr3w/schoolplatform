@@ -15,7 +15,7 @@ const crearItem = async (req,res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new Student(req.body)
+            const item = new User(req.body)
             await item.save()
             res.status(201).json({item})
         }
@@ -30,7 +30,7 @@ const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new Student(req.body)
+            const item = new User(req.body)
             await item.save()
             res.cookie("ItemInSession",item.nationality,{maxAge: 60000})
             req.session.item = item
@@ -81,8 +81,8 @@ const loginUsuario = async (req, res) =>{
 //gets R-ead
 const savewithHash = async (req,res) =>{
     let salt = bcrypt.genSaltSync(10)
-    let hash = bcrypt.hashSync(req.body.pass, salt)
-    let comparation = bcrypt.compareSync(req.body.pass, hash)
+    let hash = bcrypt.hashSync(req.body.password, salt)
+    let comparation = bcrypt.compareSync(req.body.password, hash)
     let comparation2 = bcrypt.compareSync("987654321", hash)
     res.json({hash, comparation, comparation2})
 }
@@ -91,8 +91,7 @@ const consultApi = async (req,res) => { //consume la api de pokemon y la trae
         const respuesta = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto")
         res.status(200).json({status: respuesta.status,data:respuesta.data})
     }catch(error){
-        res.status(404).json({status: error.response.status, 
-                        data:error.response.data})
+        res.status(404).json({status: error.response.status,data:error.response.data})
     }
 }
 const consultAxios1 = async (req,res) => { //consumir la api propia
@@ -106,11 +105,9 @@ const consultAxios1 = async (req,res) => { //consumir la api propia
 }
 const consultAxios2 = async (req,res) => {  //´usando ruta post con axios, 
     try{
-        const respuesta = await axios.post("http://localhost:8080/create",{first_name:req.body.first_name,
-                                                                        second_name:req.body.second_name,
-                                                                        age:req.body.age,
-                                                                        dni:req.body.dni,
-                                                                        nationality:req.body.nationality}) //"https://pokeapi.co/api/v2/pokemon/ditto"
+        const respuesta = await axios.post("http://localhost:8080/create",{ name:req.body.name,
+                                                                            email:req.body.email,
+                                                                            password:req.body.password}) //"https://pokeapi.co/api/v2/pokemon/ditto"
         res.status(200).json({status: respuesta.status,data:respuesta.data})
     }catch(error){
         res.status(404).json({status: error.response.status, 
@@ -120,15 +117,15 @@ const consultAxios2 = async (req,res) => {  //´usando ruta post con axios,
 
 
 const vistaGeneral = async (req, res) => {
-    const item = await Student.find()
+    const item = await User.find()
     res.status(200).json({item})
 }
 const vistaUnitaria = async (req, res) => {
-    const item = await Student.findById(req.params.id)
+    const item = await User.findById(req.params.id)
     res.status(200).json({item})
 }
 const busquedaUnitaria = async (req, res) => {
-    const item = await Student.findOne({name: req.params.name})
+    const item = await User.findOne({name: req.params.name})
     res.status(200).json({item})
 }
 const verSession = async (req,res) =>{
@@ -150,7 +147,7 @@ const editarItem = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            await Student.findByIdAndUpdate(req.params.id, req.body)
+            await User.findByIdAndUpdate(req.params.id, req.body)
             res.status(201).json({msg:"info updated"})
         }
         else {
@@ -172,8 +169,8 @@ const eliminarItem = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            item = await Student.findByIdAndDelete(req.params.id)
-            res.status(201).json({msg:"student deleted", item})
+            item = await User.findByIdAndDelete(req.params.id)
+            res.status(201).json({msg:"User deleted", item})
         } else {
             res.status(501).json(err)
         }
@@ -192,7 +189,7 @@ const logOut = (req, res) => {
 }*/
 const deleteAll = async(req, res) => {
 //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
-const result = await Student.deleteMany({});
+const result = await User.deleteMany({});
     res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
 }
 

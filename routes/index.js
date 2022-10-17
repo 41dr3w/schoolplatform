@@ -13,10 +13,9 @@ const auth = require("../middlewares/auth")
 router.get('/see',vistaGeneral)
 router.get('/see/:id',validar,vistaUnitaria)
 router.get('/search/:name',busquedaUnitaria)
-router.get('/seesession',auth,verSession) //auth (middleware) 
+router.get('/seesession',auth,verSession) // auth (middleware) 
 router.get('/seecookie',verCookie)
 
-router.get('/pass',savewithHash)
 router.get('/axios/api',consultApi)
 router.get('/axios/get-auto',consultAxios1)
 router.post('/axios/post-auto',consultAxios2)
@@ -30,6 +29,9 @@ router.post('/axios/post-auto',consultAxios2)
 
 
 //post
+
+router.post('/pass',savewithHash)
+
 router.post('/createsession',[check("first_name").not().isEmpty().withMessage("please fill the name"),
                               check("second_name").not().isEmpty().withMessage("please fill the age"),
                               check("dni").not().isEmpty().withMessage("please fill the dni"),  
@@ -37,11 +39,9 @@ router.post('/createsession',[check("first_name").not().isEmpty().withMessage("p
                               check("nationality").not().isEmpty().withMessage("please fill the nationality"),  
 ],crearSession)
 
-router.post('/create',[check("first_name").not().isEmpty().withMessage("please fill the name"),
-                       check("second_name").not().isEmpty().withMessage("please fill the age"),
-                       check("dni").not().isEmpty().withMessage("please fill the dni"),  
-                       check("age").not().isEmpty().withMessage("please fill the dni"),  
-                       check("nationality").not().isEmpty().withMessage("please fill the nationality"),
+router.post('/create',[check("name").not().isEmpty().withMessage("please fill the name"),
+                       check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("please enter a truly email"),
+                       check("password").not().isEmpty().withMessage("please fill the dni")
 ],crearItem)
 
 router.post('/login',[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
