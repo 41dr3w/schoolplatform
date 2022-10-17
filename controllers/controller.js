@@ -52,7 +52,7 @@ const loginUsuario = async (req,res) =>{
                 res.json({msg:"Mail o Contraseña incorrecta"})
             }
 
-            if(bcrypt.compareSync(req.body.password,usuario.password)){
+            if(!bcrypt.compareSync(req.body.password,usuario.password)){
                 res.json({msg:"Mail o Contraseña incorrecta"})
             }
             const user = {
