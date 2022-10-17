@@ -64,18 +64,18 @@ const loginUsuario = async (req,res) =>{
                res.json({msg:"Mail o Contraseña incorrecta"})
             }*/
 
-            if(bcrypt.compareSync(req.body.password,usuario.password)){ 
+            if(!bcrypt.compareSync(req.body.password,usuario.password)){ 
                 res.json({msg:"Mail o Contraseña incorrecta"})
             }
-               /* 
+               
             const user = {
-                _id: personalbar._id,
+                _id: usuario._id,
                 name: usuario.name
             }    
             req.session.user = user
             if(req.body.remember){
-                res.cookie("sessiondelusuario",req.session.user,{maxAge:60000*60*24})
-            }*/
+                res.cookie("sessiondelusuario",req.session.user,{maxAge:60000*60*24}) //SIGUE ACA, VER COMO MODIFICAR VER SESSION Y VER COOKIES PARA VER EL LOGIN
+            }
             res.json({msg:"usuario logeado"})
         }
         else {
