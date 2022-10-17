@@ -42,7 +42,36 @@ const crearSession = async (req,res) =>{
     }   
 }
 
+const loginUsuario = async (req,res) =>{
+    try {
+        const err = validationResult(req)
+        if(err.isEmpty()){
+            const usuario = await User.findOne({email:req.body.email})
+            
+            if(usuario == null){
+                res.json({msg:"Mail o Contraseña incorrecta"})
+            }
 
+            if(bcrypt.compareSync(req.body.password,usuario.password)){
+                res.json({msg:"Mail o Contraseña incorrecta"})
+            }
+            const user = {
+                _id: personalbar._id,
+                name: usuario.name
+            }    
+            req.session.user = user
+            if(req.body.remember){
+                res.cookie("sessiondelusuario",req.session.user,{maxAge:60000*60*24})
+            }
+            res.json({msg:"usuario logeado"})
+        }
+        else {
+            res.status(501).json(err)
+        }
+    } catch (error) {
+        res.json(error)
+    }
+}
 
 /*const loginToken = async (req, res) =>{
     try {
@@ -161,5 +190,5 @@ const result = await User.deleteMany({});
 
 
 
-module.exports = {eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
+module.exports = {loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
  
