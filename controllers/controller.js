@@ -1,5 +1,4 @@
 const {Student} = require("../models/student")
-const {User} = require("../models/user")
 const bcrypt = require("bcryptjs")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
@@ -16,7 +15,13 @@ const crearEstudiante = async (req,res) => {
         if(err.isEmpty()){
             let salt = bcrypt.genSaltSync(10)
             let hash = bcrypt.hashSync(req.body.password,salt)
-            const user = new User({name:req.body.name,email:req.body.email,password:hash})
+            const user = new Student({first_name:req.body.first_name,
+                                     second_name:req.body.second_name,
+                                     dni:req.body.dni,
+                                     age:req.body.age,
+                                     nationality: req.body.nationality,
+                                     email:req.body.email,
+                                     password:hash})
             await user.save()
             res.status(201).json({user})
         }
@@ -31,7 +36,7 @@ const loginEstudiante = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const usuario = await User.findOne({email:req.body.email})
+            const usuario = await Student.findOne({email:req.body.email})
             
            if(usuario === null){
                res.json({msg:"Mail o Contraseña incorrecta"})
@@ -61,15 +66,15 @@ const loginEstudiante = async (req,res) =>{
 
 //gets R-ead
 const verEstudiantes = async (req, res) => {
-    const user = await User.find()
+    const user = await Student.find()
     res.status(200).json({user})
 }
 const verEstudiante = async (req, res) => {
-    const user = await User.findById(req.params.id)
+    const user = await Student.findById(req.params.id)
     res.status(200).json({user})
 }
 const busquedaEstudiante = async (req, res) => {
-    const user = await User.findOne({name:req.params.name})
+    const user = await Student.findOne({first_name:req.params.name})
     res.status(200).json({user})
 }
 
@@ -79,7 +84,7 @@ const editarEstudiante = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            await User.findByIdAndUpdate(req.params.id, req.body)
+            await Student.findByIdAndUpdate(req.params.id,req.body)
             res.status(201).json({msg:"info updated"})
         }
         else {
@@ -95,7 +100,7 @@ const eliminarEstudiante = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            user = await User.findByIdAndDelete(req.params.id)
+            user = await Student.findByIdAndDelete(req.params.id)
             res.status(201).json({msg:"student deleted", user})
         } else {
             res.status(501).json(err)

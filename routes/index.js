@@ -34,12 +34,12 @@ router.post('/login',[check("email").not().isEmpty().withMessage("please fill th
 
 //put
 router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessage("please fill the name"),
-                                check("second_name").not().isEmpty().withMessage("please fill the age"),
-                                check("dni").not().isEmpty().withMessage("please fill the dni"),  
-                                check("age").not().isEmpty().withMessage("please fill the dni"),  
-                                check("nationality").not().isEmpty().withMessage("please fill the nationality"),
-                                check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
-                                check("password").not().isEmpty().withMessage("please fill the password")
+                                 check("second_name").not().isEmpty().withMessage("please fill the age"),
+                                 check("dni").not().isEmpty().withMessage("please fill the dni"),  
+                                 check("age").not().isEmpty().withMessage("please fill the dni"),  
+                                 check("nationality").not().isEmpty().withMessage("please fill the nationality"),
+                                 check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
+                                 check("password").not().isEmpty().withMessage("please fill the password")
 ],editarEstudiante)
 
 //delete
