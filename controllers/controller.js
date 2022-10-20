@@ -15,9 +15,9 @@ const crearItem = async (req,res) => {
         if(err.isEmpty()){
             let salt = bcrypt.genSaltSync(10)
             let hash = bcrypt.hashSync(req.body.password,salt)
-            const item = new User({name:req.body.name,email:req.body.email,password:hash})
-            await item.save()
-            res.status(201).json({item})
+            const user = new User({name:req.body.name,email:req.body.email,password:hash})
+            await user.save()
+            res.status(201).json({user})
         }
         else {
             res.status(501).json(err)
@@ -26,7 +26,6 @@ const crearItem = async (req,res) => {
         res.status(501).json({error})
     }
 }
-
 const savewithHash = async (req,res) =>{
     let salt = bcrypt.genSaltSync(10)
     let hash = bcrypt.hashSync(req.body.password, salt)
@@ -34,17 +33,19 @@ const savewithHash = async (req,res) =>{
     let comparation2 = bcrypt.compareSync("987654321", hash)
     res.json({hash, comparation, comparation2})
 }
-
 const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new User(req.body)
-            await item.save()
-            res.cookie("ItemInSession",item.nationality,{maxAge: 60000})
-            req.session.item = item
-            res.status(201).json(req.session.item)
-            
+            const preuser = new User(req.body)
+            await preuser.save()
+            const user = {
+                _id: preuser._id,
+                name: preuser.name
+            }    
+            req.session.user = user
+            res.cookie("PreuserInSession",req.session.user,{maxAge:60000*60*24})
+            res.status(201).json(req.session.user)
         }
         else {
             res.status(501).json(err)
@@ -53,16 +54,15 @@ const crearSession = async (req,res) =>{
         res.status(501).json({error})
     }   
 }
-
 const loginUsuario = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
             const usuario = await User.findOne({email:req.body.email})
             
-           /*if(usuario === null){
+           if(usuario === null){
                res.json({msg:"Mail o Contraseña incorrecta"})
-            }*/
+            }
 
             if(!bcrypt.compareSync(req.body.password,usuario.password)){ 
                 res.json({msg:"Mail o Contraseña incorrecta"})
@@ -74,9 +74,9 @@ const loginUsuario = async (req,res) =>{
             }    
             req.session.user = user
             if(req.body.remember){
-                res.cookie("sessiondelusuario",req.session.user,{maxAge:60000*60*24}) //SIGUE ACA, VER COMO MODIFICAR VER SESSION Y VER COOKIES PARA VER EL LOGIN
+                res.cookie("UserInSession",req.session.user,{maxAge:60000*60*24}) //SIGUE ACA, VER COMO MODIFICAR VER SESSION Y VER COOKIES PARA VER EL LOGIN
             }
-            res.json({msg:"usuario logeado"})
+            res.json({msg:"usuario logeado", user})
         }
         else {
             res.status(501).json(err)
@@ -85,7 +85,6 @@ const loginUsuario = async (req,res) =>{
         res.status(501).json(error)
     }
 }
-
 /*const loginToken = async (req, res) =>{
     try {
         const err = validationResult(req)
@@ -122,24 +121,25 @@ const loginUsuario = async (req,res) =>{
 }*/
 
 
+
 //gets R-ead
 const vistaGeneral = async (req, res) => {
-    const item = await User.find()
-    res.status(200).json({item})
+    const user = await User.find()
+    res.status(200).json({user})
 }
 const vistaUnitaria = async (req, res) => {
-    const item = await User.findById(req.params.id)
-    res.status(200).json({item})
+    const user = await User.findById(req.params.id)
+    res.status(200).json({user})
 }
 const busquedaUnitaria = async (req, res) => {
-    const item = await User.findOne({name: req.params.name})
-    res.status(200).json({item})
+    const user = await User.findOne({name:req.params.name})
+    res.status(200).json({user})
 }
 const verSession = async (req,res) =>{
-    res.status(200).json(req.session)
+    res.status(200).json(req.session.user)
 }
 const verCookie = async (req,res) =>{
-    res.json(req.cookies.ItemInSession)
+    res.json(req.cookies.UserInSession, req.cookies.PreuserInSession)
 }
 //jwt
 /*const sendToken = async (req,res) =>{
@@ -176,8 +176,8 @@ const eliminarItem = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            item = await User.findByIdAndDelete(req.params.id)
-            res.status(201).json({msg:"student deleted", item})
+            user = await User.findByIdAndDelete(req.params.id)
+            res.status(201).json({msg:"student deleted", user})
         } else {
             res.status(501).json(err)
         }
@@ -186,18 +186,18 @@ const eliminarItem = async(req, res) => {
     }
 }
 const eliminarCookie = async(req, res) => {
-    res.clearCookie("ItemInSession") //cuidado que arriba esta con otro nombre
+    res.clearCookie("PreuserInSession") 
     res.json({msg:'cookie deleted'})
 }
-/*const logOut = (req, res) => {
-    res.clearCookie("sessionDelUsuario") //cuidado que tiene otro nombre arriba
-    req.session.destroy()
-    res.json({msg:"Session Closed"}) 
-}*/
 const deleteAll = async(req, res) => {
 //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
 const result = await User.deleteMany({});
     res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
+}
+const logOut = (req, res) => {
+    res.clearCookie("UserInSession") //cuidado que tiene otro nombre arriba
+    req.session.destroy()
+    res.json({msg:"Session Closed"}) 
 }
 
 
