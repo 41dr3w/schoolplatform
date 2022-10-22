@@ -20,10 +20,10 @@ router.get('/see/:id',validarid,verEstudiante)
 router.get('/search/:name',busquedaEstudiante)
 
 //post
-router.post('/create',[ check("first_name").not().isEmpty().withMessage("please fill the name"),
-                        check("second_name").not().isEmpty().withMessage("please fill the age"),
+router.post('/create',[ check("first_name").not().isEmpty().withMessage("please fill the first_name"),
+                        check("second_name").not().isEmpty().withMessage("please fill the second_name"),
+                        check("age").not().isEmpty().withMessage("please fill the age"),  
                         check("dni").not().isEmpty().withMessage("please fill the dni"),  
-                        check("age").not().isEmpty().withMessage("please fill the dni"),  
                         check("nationality").not().isEmpty().withMessage("please fill the nationality"),
                         check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                         check("password").not().isEmpty().withMessage("please fill the password")  
@@ -33,10 +33,10 @@ router.post('/login',[check("email").not().isEmpty().withMessage("please fill th
 ],loginEstudiante)
 
 //put
-router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessage("please fill the name"),
-                                 check("second_name").not().isEmpty().withMessage("please fill the age"),
+router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessage("please fill the first_name"),
+                                 check("second_name").not().isEmpty().withMessage("please fill the second_name"),
+                                 check("age").not().isEmpty().withMessage("please fill the age"),  
                                  check("dni").not().isEmpty().withMessage("please fill the dni"),  
-                                 check("age").not().isEmpty().withMessage("please fill the dni"),  
                                  check("nationality").not().isEmpty().withMessage("please fill the nationality"),
                                  check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                                  check("password").not().isEmpty().withMessage("please fill the password")
@@ -46,4 +46,4 @@ router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessag
 router.delete('/delete/:id',eliminarEstudiante)
 router.delete('/logout',logoutEstudiante)
 
-module.exports = router  
+module.exports = router 

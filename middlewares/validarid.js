@@ -1,6 +1,6 @@
-const {User} = require("../models/user")
+const { Student } = require("../models/student");
 const validarid = async (req, res, next) => {
-    const item = await User.findById(req.params.id)
+    const item = await Student.findById(req.params.id)
     if (item !== null){
         next();
     } else {

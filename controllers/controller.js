@@ -16,12 +16,12 @@ const crearEstudiante = async (req,res) => {
             let salt = bcrypt.genSaltSync(10)
             let hash = bcrypt.hashSync(req.body.password,salt)
             const user = new Student({first_name:req.body.first_name,
-                                     second_name:req.body.second_name,
-                                     dni:req.body.dni,
-                                     age:req.body.age,
-                                     nationality: req.body.nationality,
-                                     email:req.body.email,
-                                     password:hash})
+                                    second_name:req.body.second_name,
+                                    dni:req.body.dni,
+                                    age:req.body.age,
+                                    nationality: req.body.nationality,
+                                    email:req.body.email,
+                                    password:hash})
             await user.save()
             res.status(201).json({user})
         }
@@ -37,30 +37,25 @@ const loginEstudiante = async (req,res) =>{
         const err = validationResult(req)
         if(err.isEmpty()){
             const usuario = await Student.findOne({email:req.body.email})
-            
-           if(usuario === null){
+           
+           if(usuario === null||!bcrypt.compareSync(req.body.password, usuario.password)){
                res.json({msg:"Mail o Contraseña incorrecta"})
             }
 
-            if(!bcrypt.compareSync(req.body.password,usuario.password)){ 
-                res.json({msg:"Mail o Contraseña incorrecta"})
-            }
-               
             const user = {
                 _id: usuario._id,
-                name: usuario.name
+                dni: usuario.dni
             }    
             req.session.user = user
+
             if(req.body.remember){
-                res.cookie("UserInSession",req.session.user,{maxAge:60000*60*24}) //SIGUE ACA, VER COMO MODIFICAR VER SESSION Y VER COOKIES PARA VER EL LOGIN
-            }
+                    res.cookie("UserInSession",req.session.user,{maxAge:60000*60*24}) //SIGUE ACA, VER COMO MODIFICAR VER SESSION Y VER COOKIES PARA VER EL LOGIN
+                }
+    
             res.json({msg:"usuario logeado", user})
         }
-        else {
-            res.status(501).json(err)
-        }
-    } catch (error) {
-        res.status(501).json(error)
+    } catch(error){
+       res.status(505)
     }
 }
 
@@ -84,10 +79,15 @@ const editarEstudiante = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            await Student.findByIdAndUpdate(req.params.id,req.body)
+            await Student.findByIdAndUpdate(req.params.id,{first_name:req.body.first_name,
+                                                           second_name:req.body.second_name,
+                                                           age:req.body.age,
+                                                           dni:req.body.dni,
+                                                           nationality: req.body.nationality,
+                                                           email:req.body.email,
+                                                           password:password})
             res.status(201).json({msg:"info updated"})
-        }
-        else {
+        } else {
             res.status(501).json(err)
         }
     } catch(error) {
