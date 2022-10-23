@@ -69,7 +69,7 @@ const verEstudiante = async (req, res) => {
     res.status(200).json({user})
 }
 const busquedaEstudiante = async (req, res) => {
-    const user = await Student.findOne({first_name:req.params.name})
+    const user = await Student.findOne({second_name:req.params.name})
     res.status(200).json({user})
 }
 
