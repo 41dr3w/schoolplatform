@@ -199,8 +199,29 @@ const result = await User.deleteMany({});
 
 const routineCheck = async(req, res) => {
     try{
-        const respuesta0 = await axios.post("http://localhost:8080/create") 
-        const respuesta1 = await axios.post("http://localhost:8080/createsession")
+        const user = {
+            first_name:'nombre',
+            second_name:'apellido',
+            dni:'123456789',
+            age:'12',
+            nationality:'marciano',
+            name: 'nombre',
+            email: 'nombre@gmail.com',
+            password: '123456789'
+        }
+
+        const respuesta0 = await axios.post("http://localhost:8080/create",{
+            name: user.name,
+            email: user.email,
+            password: user.password
+          })
+        const respuesta1 = await axios.post("http://localhost:8080/createsession",{
+            first_name:user.first_name,
+            second_name:user.second_name,
+            dni:user.dni,
+            age:user.age,
+            nationality:user.nationality
+        })
         routine=1;
         /*const respuesta2 = await axios.get("http://localhost:8080/search/:name")
         const respuesta3 = await axios.get("http://localhost:8080/see/:id")
@@ -218,7 +239,7 @@ const routineCheck = async(req, res) => {
                               status1: respuesta1.status,
                               data1:respuesta1.data})
     }catch(error){
-        res.status(404).json({routine:routines.routine, status: error.response.status,data:error.response.data})
+        res.status(404).json({routine:routines[routine], status: error.response.status,data:error.response.data})
     }
 
 /*

@@ -38,12 +38,8 @@ router.get('/axios/quoteapi',quoteAPI)
 router.get('/axios/get-auto',consultAxios1)
 router.post('/axios/post-auto',consultAxios2)
 router.get('/axios/routineCheck',routineCheck)
-
-
-
 //router.get('/sendtoken',sendToken)
 //router.get('verifytoken',validarToken)
-
 
 //post
 
