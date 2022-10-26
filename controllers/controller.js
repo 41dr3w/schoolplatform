@@ -4,11 +4,11 @@ const bcrypt = require("bcryptjs")
 const axios = require("axios")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
+const {routines} = require("../helpers/routines")
+const routine = 0;
 //const generateToken = require("../helpers/generateJWT")
 
-
 //vistas
-
 
 //post C-reate
 const crearItem = async (req,res) => {
@@ -86,9 +86,9 @@ const savewithHash = async (req,res) =>{
     let comparation2 = bcrypt.compareSync("987654321", hash)
     res.json({hash, comparation, comparation2})
 }
-const consultApi = async (req,res) => { //consume la api de pokemon y la trae 
+const quoteAPI = async (req,res) => { //consume la api de pokemon y la trae 
     try{
-        const respuesta = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto")
+        const respuesta = await axios.get("https://frasedeldia.azurewebsites.net/api/phrase")
         res.status(200).json({status: respuesta.status,data:respuesta.data})
     }catch(error){
         res.status(404).json({status: error.response.status,data:error.response.data})
@@ -193,8 +193,81 @@ const result = await User.deleteMany({});
     res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
 }
 
+//se prueba todos los endpoint del server para corroborar su funcionamiento.
 
 
 
-module.exports = {/*sendToken,logOut,*/savewithHash,consultApi,consultAxios1,consultAxios2,loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
+const routineCheck = async(req, res) => {
+    try{
+        const respuesta0 = await axios.post("http://localhost:8080/create") 
+        const respuesta1 = await axios.post("http://localhost:8080/createsession")
+        routine=1;
+        /*const respuesta2 = await axios.get("http://localhost:8080/search/:name")
+        const respuesta3 = await axios.get("http://localhost:8080/see/:id")
+        const respuesta4 = await axios.get("http://localhost:8080/seesession")
+        const respuesta5 = await axios.get("http://localhost:8080/seecookie")
+        const respuesta6 = await axios.get("http://localhost:8080/delete/session")
+        const respuesta7 = await axios.get("http://localhost:8080/seesession")
+        const respuesta8 = await axios.get("http://localhost:8080/deletecookie")
+        const respuesta9 = await axios.get("http://localhost:8080/seecookie")
+        const respuesta10 = await axios.get("http://localhost:8080/delete/:id")*/
+
+        res.status(200).json({msg:"routineCheck succesfully",
+                              status0: respuesta0.status,
+                              data0:respuesta0.data,
+                              status1: respuesta1.status,
+                              data1:respuesta1.data})
+    }catch(error){
+        res.status(404).json({routine:routines.routine, status: error.response.status,data:error.response.data})
+    }
+
+/*
+router.post('/create',[check("name").not().isEmpty().withMessage("please fill the name"),
+                        check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("please enter a truly email"),
+                        check("password").not().isEmpty().withMessage("please fill the dni")
+],crearItem)
+router.post('/createsession',[check("first_name").not().isEmpty().withMessage("please fill the name"),
+                              check("second_name").not().isEmpty().withMessage("please fill the age"),
+                              check("dni").not().isEmpty().withMessage("please fill the dni"),  
+                              check("age").not().isEmpty().withMessage("please fill the dni"),  
+                              check("nationality").not().isEmpty().withMessage("please fill the nationality"),  
+],crearSession)
+router.get('/search/:name',busquedaUnitaria)
+router.get('/see/:id',validar,vistaUnitaria)
+router.get('/seesession',auth,verSession) // auth (middleware) 
+router.get('/seecookie',verCookie)
+router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage("please fill the name"),
+                                check("second_name").not().isEmpty().withMessage("please fill the age"),
+                                check("dni").not().isEmpty().withMessage("please fill the dni"),  
+                                check("age").not().isEmpty().withMessage("please fill the dni"),  
+                                check("nationality").not().isEmpty().withMessage("please fill the nationality"),
+],editarItem)
+router.delete('/delete/session',cerrarSession)
+router.get('/seesession',auth,verSession) // auth (middleware) 
+router.delete('/deletecookie',eliminarCookie)
+router.get('/seecookie',verCookie)
+router.delete('/delete/:id',validar,eliminarItem)
+*/
+
+}
+
+module.exports = {/*sendToken,logOut,*/
+                savewithHash,
+                quoteAPI,
+                consultAxios1,
+                consultAxios2,
+                loginUsuario,
+                eliminarCookie,
+                verCookie,
+                verSession,
+                crearSession,
+                vistaGeneral,
+                crearItem,
+                vistaUnitaria,
+                busquedaUnitaria, 
+                editarItem, 
+                eliminarItem,
+                cerrarSession,
+                deleteAll,
+                routineCheck}
  
