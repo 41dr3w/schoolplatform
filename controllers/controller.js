@@ -5,6 +5,7 @@ const axios = require("axios")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
 const {routines} = require("../helpers/routines")
+const { response } = require("express")
 const routine = 0;
 //const generateToken = require("../helpers/generateJWT")
 
@@ -30,7 +31,7 @@ const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new User(req.body)
+            const item = new Student(req.body)
             await item.save()
             res.cookie("ItemInSession",item.nationality,{maxAge: 60000})
             req.session.item = item
@@ -202,28 +203,38 @@ const routineCheck = async(req, res) => {
         const user = {
             first_name:'nombre',
             second_name:'apellido',
-            dni:'123456789',
-            age:'12',
+            dni:123456789,
+            age:12,
             nationality:'marciano',
             name: 'nombre',
             email: 'nombre@gmail.com',
             password: '123456789'
         }
 
-        const respuesta0 = await axios.post("http://localhost:8080/create",{
-            name: user.name,
-            email: user.email,
-            password: user.password
+        const respuesta = await axios.post("http://localhost:8080/create",{
+            name:user.name,
+            email:user.email,
+            password:user.password
           })
-        const respuesta1 = await axios.post("http://localhost:8080/createsession",{
+        /*respuesta = await axios.post("http://localhost:8080/createsession",{
             first_name:user.first_name,
             second_name:user.second_name,
             dni:user.dni,
             age:user.age,
             nationality:user.nationality
         })
-        routine=1;
-        /*const respuesta2 = await axios.get("http://localhost:8080/search/:name")
+        routine=1;*/
+     
+        res.status(200).json({msg:"routineCheck succesfully",
+                              status:respuesta.status,
+                              data:respuesta.data})
+    }   catch(error){
+        res.status(404).json({routine:routines[routine], 
+                            status:respuesta.status,
+                            data:respuesta.data})
+    }
+
+   /*const respuesta2 = await axios.get("http://localhost:8080/search/:name")
         const respuesta3 = await axios.get("http://localhost:8080/see/:id")
         const respuesta4 = await axios.get("http://localhost:8080/seesession")
         const respuesta5 = await axios.get("http://localhost:8080/seecookie")
@@ -233,14 +244,8 @@ const routineCheck = async(req, res) => {
         const respuesta9 = await axios.get("http://localhost:8080/seecookie")
         const respuesta10 = await axios.get("http://localhost:8080/delete/:id")*/
 
-        res.status(200).json({msg:"routineCheck succesfully",
-                              status0: respuesta0.status,
-                              data0:respuesta0.data,
-                              status1: respuesta1.status,
-                              data1:respuesta1.data})
-    }catch(error){
-        res.status(404).json({routine:routines[routine], status: error.response.status,data:error.response.data})
-    }
+
+
 
 /*
 router.post('/create',[check("name").not().isEmpty().withMessage("please fill the name"),

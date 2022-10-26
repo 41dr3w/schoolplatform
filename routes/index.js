@@ -52,7 +52,7 @@ router.post('/createsession',[check("first_name").not().isEmpty().withMessage("p
 ],crearSession)
 router.post('/create',[check("name").not().isEmpty().withMessage("please fill the name"),
                        check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("please enter a truly email"),
-                       check("password").not().isEmpty().withMessage("please fill the dni")
+                       check("password").not().isEmpty().withMessage("please fill the password")
 ],crearItem)
 router.post('/login',[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                       check("password").not().isEmpty().withMessage("please fill the password")
