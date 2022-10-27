@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 const axios = require("axios")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
-const {routines} = require("../helpers/routines")
+const {routinename, Routine} = require("../helpers/routines")
 const { response } = require("express")
 const routine = 0;
 //const generateToken = require("../helpers/generateJWT")
@@ -31,9 +31,9 @@ const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new Student(req.body)
+            const item = new User(req.body)
             await item.save()
-            res.cookie("ItemInSession",item.nationality,{maxAge: 60000})
+            res.cookie("ItemInSession",item,{maxAge: 60000})
             req.session.item = item
             res.status(201).json(req.session.item)
             
@@ -122,12 +122,17 @@ const vistaGeneral = async (req, res) => {
     res.status(200).json({item})
 }
 const vistaUnitaria = async (req, res) => {
-    const item = await User.findById(req.params.id)
-    res.status(200).json({item})
+    try {
+        const item = await User.findById(req.params.id)
+        res.status(200).json({item})
+    } catch (error) {
+        res.status().json({item})
+    }
 }
 const busquedaUnitaria = async (req, res) => {
     const item = await User.findOne({name: req.params.name})
-    res.status(200).json({item})
+    if (item !== null) {res.status(200).json({item})} 
+    else {res.status(404).json({msg:"search not found"})}
 }
 const verSession = async (req,res) =>{
     res.status(200).json(req.session)
@@ -196,53 +201,47 @@ const result = await User.deleteMany({});
 
 //se prueba todos los endpoint del server para corroborar su funcionamiento.
 
-
-
 const routineCheck = async(req, res) => {
-    try{
-        const user = {
-            first_name:'nombre',
-            second_name:'apellido',
-            dni:123456789,
-            age:12,
-            nationality:'marciano',
-            name: 'nombre',
-            email: 'nombre@gmail.com',
-            password: '123456789'
-        }
 
-        const respuesta = await axios.post("http://localhost:8080/create",{
+    const user = {
+        name: 'nombre',
+        email: 'nombre@gmail.com',
+        password: '123456789'
+    }
+
+    const routines = []
+
+    Promise.allSettled([
+        axios.post("http://localhost:8080/create",{
             name:user.name,
             email:user.email,
             password:user.password
-          })
-        /*respuesta = await axios.post("http://localhost:8080/createsession",{
-            first_name:user.first_name,
-            second_name:user.second_name,
-            dni:user.dni,
-            age:user.age,
-            nationality:user.nationality
-        })
-        routine=1;*/
-     
-        res.status(200).json({msg:"routineCheck succesfully",
-                              status:respuesta.status,
-                              data:respuesta.data})
-    }   catch(error){
-        res.status(404).json({routine:routines[routine], 
-                            status:respuesta.status,
-                            data:respuesta.data})
-    }
+          }),
+        axios.get(`http://localhost:8080/search/${user.name}`) //AVERIGUAR COMO CONSEGUIR UN RESULTADO INMEDIATO
+        //axios.get("http://localhost:8080/delete/:id")
+    ])
 
-   /*const respuesta2 = await axios.get("http://localhost:8080/search/:name")
-        const respuesta3 = await axios.get("http://localhost:8080/see/:id")
-        const respuesta4 = await axios.get("http://localhost:8080/seesession")
-        const respuesta5 = await axios.get("http://localhost:8080/seecookie")
-        const respuesta6 = await axios.get("http://localhost:8080/delete/session")
-        const respuesta7 = await axios.get("http://localhost:8080/seesession")
-        const respuesta8 = await axios.get("http://localhost:8080/deletecookie")
-        const respuesta9 = await axios.get("http://localhost:8080/seecookie")
-        const respuesta10 = await axios.get("http://localhost:8080/delete/:id")*/
+        .then(values => {        
+            values.forEach((value,index) => {
+                routines.push(new Routine(routinename[index], value.status)) //CONTINUAR CON DISCRIMINACION DE VALORES         
+            })
+           res.json({msg:"routineCheck succesfully",routines})
+        })
+ 
+      
+     /* const respuesta3 = await axios.get("http://localhost:8080/see/:id")
+        const respuesta4 = await axios.post("http://localhost:8080/createsession",{
+            name:user.name,
+            email:user.email,
+            password:user.password
+        })
+        const respuesta5 = await axios.get("http://localhost:8080/seesession")
+        const respuesta6 = await axios.get("http://localhost:8080/seecookie")
+        const respuesta7 = await axios.get("http://localhost:8080/delete/session")
+        const respuesta8 = await axios.get("http://localhost:8080/seesession")
+        const respuesta9 = await axios.get("http://localhost:8080/deletecookie")
+        const respuesta10 = await axios.get("http://localhost:8080/seecookie")
+       
 
 
 
