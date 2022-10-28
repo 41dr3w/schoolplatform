@@ -4,9 +4,6 @@ const router = express.Router()
 const {routineCheck,
        savewithHash,
        quoteAPI,
-       consultAxios1,
-       consultAxios2,
-       loginUsuario,
        eliminarCookie,
        verCookie,
        cerrarSession,
@@ -22,9 +19,6 @@ const {routineCheck,
 const {validar} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
-//const validarToken = require("")
-
-
 
 //get
 router.get('/see',vistaGeneral)
@@ -33,16 +27,10 @@ router.get('/search/:name',busquedaUnitaria)
 router.get('/seesession',auth,verSession) // auth (middleware) 
 router.get('/seecookie',verCookie)
 
-
 router.get('/axios/quoteapi',quoteAPI)
-router.get('/axios/get-auto',consultAxios1)
-router.post('/axios/post-auto',consultAxios2)
 router.get('/axios/routineCheck',routineCheck)
-//router.get('/sendtoken',sendToken)
-//router.get('verifytoken',validarToken)
 
 //post
-
 router.post('/pass',savewithHash)
 router.post('/createsession',[check("first_name").not().isEmpty().withMessage("please fill the name"),
                               check("second_name").not().isEmpty().withMessage("please fill the age"),
@@ -54,17 +42,6 @@ router.post('/create',[check("name").not().isEmpty().withMessage("please fill th
                        check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("please enter a truly email"),
                        check("password").not().isEmpty().withMessage("please fill the password")
 ],crearItem)
-router.post('/login',[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
-                      check("password").not().isEmpty().withMessage("please fill the password")
-],loginUsuario)
-
-/*router.post('/logintoken',[
-    check("email").not().isEmpty().withMessage("Falta ingresar Mail").isEmail().withMessage("Mail Inexistente"),
-    check("password").not().isEmpty().withMessage("Falta Mail")
-], loginToken)*/
-
-
-
 
 //put
 router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage("please fill the name"),
@@ -74,14 +51,11 @@ router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage(
                                 check("nationality").not().isEmpty().withMessage("please fill the nationality"),
 ],editarItem)
 
-
-
-
 //delete
 router.delete('/delete/session',cerrarSession)
 router.delete('/delete/:id',validar,eliminarItem)
 router.delete('/deletecollection',deleteAll)
 router.delete('/deletecookie',eliminarCookie)
-//router.delete('/logout',logOut)
+
 
 module.exports = router  
