@@ -7,7 +7,6 @@ const { default: mongoose } = require("mongoose")
 const {routinename, Routine} = require("../helpers/routines")
 const { response } = require("express")
 const routine = 0;
-//const generateToken = require("../helpers/generateJWT")
 
 //vistas
 
@@ -190,12 +189,9 @@ const result = await User.deleteMany({});
 
 
 
-module.exports = {/*sendToken,logOut,*/
+module.exports = {
                 savewithHash,
                 quoteAPI,
-                consultAxios1,
-                consultAxios2,
-                loginUsuario,
                 eliminarCookie,
                 verCookie,
                 verSession,
