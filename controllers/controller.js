@@ -206,44 +206,45 @@ const routineCheck = async(req, res) => {
     const user = {
         name: 'nombre',
         email: 'nombre@gmail.com',
-        password: '123456789'
+        password: '123456789',
+        id:''
     }
 
     const routines = []
-
+    
     Promise.allSettled([
         axios.post("http://localhost:8080/create",{
             name:user.name,
             email:user.email,
             password:user.password
           }),
-        axios.get(`http://localhost:8080/search/${user.name}`) //AVERIGUAR COMO CONSEGUIR UN RESULTADO INMEDIATO
-        //axios.get("http://localhost:8080/delete/:id")
+        axios.get(`http://localhost:8080/search/${user.name}`).then(value=>user.id=value.data.item._id), //AVERIGUAR COMO CONSEGUIR UN RESULTADO INMEDIATO
+        axios.get(`http://localhost:8080/see/${user.id}`),
+        axios.get(`http://localhost:8080/delete/${user.id}`),
+        axios.post("http://localhost:8080/createsession",{user}),
+        axios.get("http://localhost:8080/seesession"),
+        axios.delete("http://localhost:8080/delete/session"),
+        axios.get("http://localhost:8080/seecookie"),
+        axios.get("http://localhost:8080/seesession"),
+        axios.delete("http://localhost:8080/deletecookie"),
+        axios.get("http://localhost:8080/seecookie")
+          
     ])
 
         .then(values => {        
             values.forEach((value,index) => {
-                routines.push(new Routine(routinename[index], value.status)) //CONTINUAR CON DISCRIMINACION DE VALORES         
+                routines.push(new Routine(routinename[index], 
+                value.status=="fulfilled"? "routine succesful" : "routine failure",
+                value.status=="fulfilled"? value.value.statusText : value.reason.code,
+                value.status=="fulfilled"? value.value.status : value.reason.message))//CONTINUAR CON DISCRIMINACION DE VALORES         
             })
            res.json({msg:"routineCheck succesfully",routines})
+           //console.log(values[2])
         })
  
       
-     /* const respuesta3 = await axios.get("http://localhost:8080/see/:id")
-        const respuesta4 = await axios.post("http://localhost:8080/createsession",{
-            name:user.name,
-            email:user.email,
-            password:user.password
-        })
-        const respuesta5 = await axios.get("http://localhost:8080/seesession")
-        const respuesta6 = await axios.get("http://localhost:8080/seecookie")
-        const respuesta7 = await axios.get("http://localhost:8080/delete/session")
-        const respuesta8 = await axios.get("http://localhost:8080/seesession")
-        const respuesta9 = await axios.get("http://localhost:8080/deletecookie")
-        const respuesta10 = await axios.get("http://localhost:8080/seecookie")
-       
-
-
+     /*
+ /////REACOMODAR LOS CHECKS PARA EL MODELO DE ESTUDIANTE PARA QUE AL SER EL MERGE SEA UN POCO MAS FACIL!!
 
 
 /*
