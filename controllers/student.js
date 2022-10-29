@@ -4,7 +4,7 @@ const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
 
 
-const controllers = {
+const ctrlstudent = {
 
     //post C-reate
     async crearEstudiante(req,res){
