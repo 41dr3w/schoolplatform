@@ -1,23 +1,16 @@
 
 const express = require("express")
 const router = express.Router()
-const {editarEstudiante,
-       eliminarEstudiante,
-       logoutEstudiante,
-       loginEstudiante,
-       crearEstudiante,
-       verEstudiantes,
-       verEstudiante, 
-       busquedaEstudiante} = require("../controllers/controller")
+const {controllers} = require("../controllers/student")
 const {validarid} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
 
 //get
-router.get('/see',verEstudiantes)
-router.get('/see/:id',validarid,verEstudiante)
-router.get('/search/:name',busquedaEstudiante)
+router.get('/see',controllers.verEstudiantes)//verEstudiantes)
+router.get('/see/:id',validarid,controllers.verEstudiante)//verEstudiante)
+router.get('/search/:name',controllers.busquedaEstudiante)//busquedaEstudiante)
 
 //post
 router.post('/create',[ check("first_name").not().isEmpty().withMessage("please fill the first_name"),
@@ -27,10 +20,10 @@ router.post('/create',[ check("first_name").not().isEmpty().withMessage("please 
                         check("nationality").not().isEmpty().withMessage("please fill the nationality"),
                         check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                         check("password").not().isEmpty().withMessage("please fill the password")  
-], crearEstudiante)
+],controllers.crearEstudiante)//Controllers.crearEstudiante)
 router.post('/login',[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                       check("password").not().isEmpty().withMessage("please fill the password")
-],loginEstudiante)
+],controllers.loginEstudiante)//Controllers.loginEstudiante)
 
 //put
 router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessage("please fill the first_name"),
@@ -40,10 +33,10 @@ router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessag
                                  check("nationality").not().isEmpty().withMessage("please fill the nationality"),
                                  check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                                  check("password").not().isEmpty().withMessage("please fill the password")
-],editarEstudiante)
+],controllers.editarEstudiante)//Controllers.editarEstudiante)
 
 //delete
-router.delete('/delete/:id',eliminarEstudiante)
-router.delete('/logout',logoutEstudiante)
+router.delete('/delete/:id',controllers.eliminarEstudiante)//Controllers.eliminarEstudiante)//eliminarEstudiante)
+router.delete('/logout',controllers.logoutEstudiante)//Controllers.logoutEstudiante)//logoutEstudiante)
 
 module.exports = router 
