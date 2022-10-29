@@ -45,8 +45,6 @@ const crearSession = async (req,res) =>{
     }   
 }
 
-
-
 //gets R-ead
 const savewithHash = async (req,res) =>{
     let salt = bcrypt.genSaltSync(10)
@@ -152,8 +150,6 @@ const editarItem = async(req, res) => {
         res.status(501).json({error})
     }
 }
-
-
 
 //delete D-elete
 const cerrarSession = async (req,res) =>{

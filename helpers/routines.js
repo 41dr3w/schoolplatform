@@ -21,6 +21,5 @@ function Routine(name,checked,info,statuscode) {
 }
 
 
-
 module.exports = {routinename,Routine}
 

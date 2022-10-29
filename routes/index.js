@@ -44,10 +44,10 @@ router.post('/create',[check("name").not().isEmpty().withMessage("please fill th
 ],crearItem)
 
 //put
-router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage("please fill the name"),
-                                check("second_name").not().isEmpty().withMessage("please fill the age"),
+router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage("please fill the first_name"),
+                                check("second_name").not().isEmpty().withMessage("please fill the second_name"),
                                 check("dni").not().isEmpty().withMessage("please fill the dni"),  
-                                check("age").not().isEmpty().withMessage("please fill the dni"),  
+                                check("age").not().isEmpty().withMessage("please fill the age"),  
                                 check("nationality").not().isEmpty().withMessage("please fill the nationality"),
 ],editarItem)
 
