@@ -1,4 +1,5 @@
 const {Student} = require("../models/student")
+<<<<<<< HEAD
 const {User} = require("../models/user")
 const bcrypt = require("bcryptjs")
 const axios = require("axios")
@@ -7,6 +8,10 @@ const { default: mongoose } = require("mongoose")
 const {routinename, Routine} = require("../helpers/routines")
 const { response } = require("express")
 const routine = 0;
+=======
+const { default: mongoose } = require("mongoose")
+
+>>>>>>> 0330fb318219de278cc0ad4865d5e8f657b5baa3
 
 //vistas
 
@@ -26,6 +31,7 @@ const crearItem = async (req,res) => {
         res.status(501).json({error})
     }
 }
+<<<<<<< HEAD
 const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
@@ -44,6 +50,9 @@ const crearSession = async (req,res) =>{
         res.status(501).json({error})
     }   
 }
+=======
+
+>>>>>>> 0330fb318219de278cc0ad4865d5e8f657b5baa3
 
 //gets R-ead
 const savewithHash = async (req,res) =>{
@@ -125,6 +134,7 @@ const busquedaUnitaria = async (req, res) => {
     if (item !== null) {res.status(200).json({item})} 
     else {res.status(404).json({msg:"search not found"})}
 }
+<<<<<<< HEAD
 const verSession = async (req,res) =>{
     res.status(200).json(req.session)
 }
@@ -133,6 +143,8 @@ const verCookie = async (req,res) =>{
 }
 
 
+=======
+>>>>>>> 0330fb318219de278cc0ad4865d5e8f657b5baa3
 
 
 //put U-pdate
@@ -151,11 +163,11 @@ const editarItem = async(req, res) => {
     }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0330fb318219de278cc0ad4865d5e8f657b5baa3
 //delete D-elete
-const cerrarSession = async (req,res) =>{
-    req.session.destroy()
-    res.json({msg:"session is close"})
-}
 const eliminarItem = async(req, res) => {
     try {
         const err = validationResult(req)
@@ -169,12 +181,15 @@ const eliminarItem = async(req, res) => {
         res.status(501).json({error})
     }
 }
+<<<<<<< HEAD
 const eliminarCookie = async(req, res) => {
     res.clearCookie("ItemInSession") //cuidado que arriba esta con otro nombre
     res.json({msg:'cookie deleted'})
 }/*
 
 }*/
+=======
+>>>>>>> 0330fb318219de278cc0ad4865d5e8f657b5baa3
 const deleteAll = async(req, res) => {
 //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
 const result = await User.deleteMany({});
@@ -182,6 +197,7 @@ const result = await User.deleteMany({});
 }
 
 
+<<<<<<< HEAD
 
 
 
@@ -201,4 +217,7 @@ module.exports = {
                 cerrarSession,
                 deleteAll,
                 routineCheck}
+=======
+module.exports = {vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria,editarItem, eliminarItem,deleteAll}
+>>>>>>> 0330fb318219de278cc0ad4865d5e8f657b5baa3
  
