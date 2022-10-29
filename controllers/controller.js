@@ -13,11 +13,14 @@ const routine = 0;
 //post C-reate
 const crearItem = async (req,res) => {
     try {
+
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new User(req.body)
-            await item.save()
-            res.status(201).json({item})
+            let salt = bcrypt.genSaltSync(10)
+            let hash = bcrypt.hashSync(req.body.password,salt)
+            const user = new User({name:req.body.name,email:req.body.email,password:hash})
+            await user.save()
+            res.status(201).json({user})
         }
         else {
             res.status(501).json(err)
@@ -26,16 +29,26 @@ const crearItem = async (req,res) => {
         res.status(501).json({error})
     }
 }
+const savewithHash = async (req,res) =>{
+    let salt = bcrypt.genSaltSync(10)
+    let hash = bcrypt.hashSync(req.body.password, salt)
+    let comparation = bcrypt.compareSync(req.body.password, hash)
+    let comparation2 = bcrypt.compareSync("987654321", hash)
+    res.json({hash, comparation, comparation2})
+}
 const crearSession = async (req,res) =>{
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            const item = new User(req.body)
-            await item.save()
-            res.cookie("ItemInSession",item,{maxAge: 60000})
-            req.session.item = item
-            res.status(201).json(req.session.item)
-            
+            const preuser = new User(req.body)
+            await preuser.save()
+            const user = {
+                _id: preuser._id,
+                name: preuser.name
+            }    
+            req.session.user = user
+            res.cookie("PreuserInSession",req.session.user,{maxAge:60000*60*24})
+            res.status(201).json(req.session.user)
         }
         else {
             res.status(501).json(err)
@@ -44,55 +57,58 @@ const crearSession = async (req,res) =>{
         res.status(501).json({error})
     }   
 }
+const loginUsuario = async (req,res) =>{
+    try {
+        const err = validationResult(req)
+        if(err.isEmpty()){
+            const usuario = await User.findOne({email:req.body.email})
+            
+           if(usuario === null){
+               res.json({msg:"Mail o Contraseña incorrecta"})
+            }
 
-//gets R-ead
-const savewithHash = async (req,res) =>{
-    let salt = bcrypt.genSaltSync(10)
-    let hash = bcrypt.hashSync(req.body.password, salt)
-    let comparation = bcrypt.compareSync(req.body.password, hash)
-    let comparation2 = bcrypt.compareSync("987654321", hash)
-    res.json({hash, comparation, comparation2})
-}
-
-//se prueba todos los endpoint del server para corroborar su funcionamiento.
-
-const quoteAPI = async (req,res) => { //consume la api de pokemon y la trae 
-    try{
-        const respuesta = await axios.get("https://frasedeldia.azurewebsites.net/api/phrase")
-        res.status(200).json({status: respuesta.status,data:respuesta.data})
-    }catch(error){
-        res.status(404).json({status: error.response.status,data:error.response.data})
+            if(!bcrypt.compareSync(req.body.password,usuario.password)){ 
+                res.json({msg:"Mail o Contraseña incorrecta"})
+            }
+               
+            const user = {
+                _id: usuario._id,
+                name: usuario.name
+            }    
+            req.session.user = user
+            if(req.body.remember){
+                res.cookie("UserInSession",req.session.user,{maxAge:60000*60*24}) //SIGUE ACA, VER COMO MODIFICAR VER SESSION Y VER COOKIES PARA VER EL LOGIN
+            }
+            res.json({msg:"usuario logeado", user})
+        }
+        else {
+            res.status(501).json(err)
+        }
+    } catch (error) {
+        res.status(501).json(error)
     }
 }
-const routineCheck = async(req, res) => {
+/*const loginToken = async (req, res) =>{
+    try {
+        const err = validationResult(req)
+        if(err.isEmpty()){
 
-    const user = {
-        name: 'nombre',
-        email: 'nombre@gmail.com',
-        password: '123456789',
-        id:''
-    }
+            const usuario = await User.findOne({email: req.body.email})
+            res.status(201).json({msg:"product updated"})
+        
+            if(usuario==null){  //valida si el usuario existe en la base de datos.
+                res.json({msg:"Contraseña o Email Incorrectos"}) //agregar codigo de estado
+            }    
+            
+            if(bcrypt.compareSync(req.body.password, usuario.password)){ //compara con la contraseña guardada en la  base dedatos
+                res.json({msg: "Contraseña o Email Incorrectos"})
+            }
 
-    const routines = []
-    
-    Promise.allSettled([
-        axios.post("http://localhost:8080/create",{
-            name:user.name,
-            email:user.email,
-            password:user.password
-          }),
-        axios.get(`http://localhost:8080/search/${user.name}`).then(value=>user.id=value.data.item._id), //AVERIGUAR COMO CONSEGUIR UN RESULTADO INMEDIATO
-        axios.get(`http://localhost:8080/see/${user.id}`),
-        axios.get(`http://localhost:8080/delete/${user.id}`),
-        axios.post("http://localhost:8080/createsession",{user}),
-        axios.get("http://localhost:8080/seesession"),
-        axios.delete("http://localhost:8080/delete/session"),
-        axios.get("http://localhost:8080/seecookie"),
-        axios.get("http://localhost:8080/seesession"),
-        axios.delete("http://localhost:8080/deletecookie"),
-        axios.get("http://localhost:8080/seecookie")
-          
-    ])
+            const token = await generateToken({id:usuario_id,email:_email})
+                _id: usuario._id,
+                name: usuario.name
+            }
+            req.session.user = user
 
         .then(values => {        
             values.forEach((value,index) => {
@@ -109,16 +125,12 @@ const routineCheck = async(req, res) => {
 
 
 const vistaGeneral = async (req, res) => {
-    const item = await User.find()
-    res.status(200).json({item})
+    const user = await User.find()
+    res.status(200).json({user})
 }
 const vistaUnitaria = async (req, res) => {
-    try {
-        const item = await User.findById(req.params.id)
-        res.status(200).json({item})
-    } catch (error) {
-        res.status().json({item})
-    }
+    const user = await User.findById(req.params.id)
+    res.status(200).json({user})
 }
 const busquedaUnitaria = async (req, res) => {
     const item = await User.findOne({name: req.params.name})
@@ -126,10 +138,10 @@ const busquedaUnitaria = async (req, res) => {
     else {res.status(404).json({msg:"search not found"})}
 }
 const verSession = async (req,res) =>{
-    res.status(200).json(req.session)
+    res.status(200).json(req.session.user)
 }
 const verCookie = async (req,res) =>{
-    res.json(req.cookies.ItemInSession)
+    res.json(req.cookies.UserInSession, req.cookies.PreuserInSession)
 }
 
 
@@ -160,8 +172,8 @@ const eliminarItem = async(req, res) => {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            item = await User.findByIdAndDelete(req.params.id)
-            res.status(201).json({msg:"User deleted", item})
+            user = await User.findByIdAndDelete(req.params.id)
+            res.status(201).json({msg:"student deleted", user})
         } else {
             res.status(501).json(err)
         }
@@ -170,31 +182,22 @@ const eliminarItem = async(req, res) => {
     }
 }
 const eliminarCookie = async(req, res) => {
-    res.clearCookie("ItemInSession") //cuidado que arriba esta con otro nombre
+    res.clearCookie("PreuserInSession") 
     res.json({msg:'cookie deleted'})
 }/*
-
+const logOut = (req, res) => {
+    res.clearCookie("sessionDelUsuario") //cuidado que tiene otro nombre arriba
+    req.session.destroy()
+    res.json({msg:"Session Closed"}) 
 }*/
 const deleteAll = async(req, res) => {
 //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
-const result = await User.deleteMany({});
+const result = await Student.deleteMany({});
     res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
 }
 
-module.exports = {
-                savewithHash,
-                quoteAPI,
-                eliminarCookie,
-                verCookie,
-                verSession,
-                crearSession,
-                vistaGeneral,
-                crearItem,
-                vistaUnitaria,
-                busquedaUnitaria, 
-                editarItem, 
-                eliminarItem,
-                cerrarSession,
-                deleteAll,
-                routineCheck}
+
+
+
+module.exports = {/*sendToken,logOut,*/loginUsuario,eliminarCookie,verCookie,verSession,crearSession,vistaGeneral,crearItem,vistaUnitaria,busquedaUnitaria, editarItem, eliminarItem,cerrarSession,deleteAll}
  

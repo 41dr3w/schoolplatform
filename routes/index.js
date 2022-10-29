@@ -16,13 +16,13 @@ const {routineCheck,
        editarItem,
        eliminarItem,
        deleteAll} = require("../controllers/controller")
-const {validar} = require("../middlewares/validarid")
+const {validarid} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
 //get
 router.get('/see',vistaGeneral)
-router.get('/see/:id',validar,vistaUnitaria)
+router.get('/see/:id',validarid,vistaUnitaria)
 router.get('/search/:name',busquedaUnitaria)
 router.get('/seesession',auth,verSession) // auth (middleware) 
 router.get('/seecookie',verCookie)
@@ -32,16 +32,20 @@ router.get('/axios/routineCheck',routineCheck)
 
 //post
 router.post('/pass',savewithHash)
-router.post('/createsession',[check("first_name").not().isEmpty().withMessage("please fill the name"),
+router.post('/createsession',/*[check("first_name").not().isEmpty().withMessage("please fill the name"),
                               check("second_name").not().isEmpty().withMessage("please fill the age"),
                               check("dni").not().isEmpty().withMessage("please fill the dni"),  
                               check("age").not().isEmpty().withMessage("please fill the age"),  
                               check("nationality").not().isEmpty().withMessage("please fill the nationality"),  
-],crearSession)
-router.post('/create',[check("name").not().isEmpty().withMessage("please fill the name"),
+],*/crearSession)
+router.post('/create',/*[check("name").not().isEmpty().withMessage("please fill the name"),
                        check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("please enter a truly email"),
                        check("password").not().isEmpty().withMessage("please fill the password")
-],crearItem)
+],*/crearItem)
+
+router.post('/login',/*[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
+                      check("password").not().isEmpty().withMessage("please fill the password")
+],*/loginUsuario)
 
 /*router.post('/logintoken',[
     check("email").not().isEmpty().withMessage("Falta ingresar Mail").isEmail().withMessage("Mail Inexistente"),
@@ -52,7 +56,7 @@ router.post('/create',[check("name").not().isEmpty().withMessage("please fill th
 
 
 //put
-router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage("please fill the first_name"),
+router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessage("please fill the first_name"),
                                 check("second_name").not().isEmpty().withMessage("please fill the second_name"),
                                 check("dni").not().isEmpty().withMessage("please fill the dni"),  
                                 check("age").not().isEmpty().withMessage("please fill the age"),  
@@ -61,7 +65,7 @@ router.put('/edit/:id',validar,[check("first_name").not().isEmpty().withMessage(
 
 //delete
 router.delete('/delete/session',cerrarSession)
-router.delete('/delete/:id',validar,eliminarItem)
+router.delete('/delete/:id',eliminarItem)
 router.delete('/deletecollection',deleteAll)
 router.delete('/delete/cookie',eliminarCookie)
 //router.delete('/logout',logOut)
