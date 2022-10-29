@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const { options } = require("../routes")
 
 const Schema = mongoose.Schema
 
@@ -8,29 +9,37 @@ const student = new Schema ({
             type:String,
             required:true
         },
-        second_name:{
+        last_name:{
             type:String,
-            required:true
-        },
-        age:{
-            type:Number,
             required:true
         },
         dni:{
             type:Number,
             required:true
         },
+        dateofbirth:{
+            type:Date,
+            required:true
+        },
+        sex:{
+            type:String,
+            required:true
+        },
         nationality:{
             type:String,
             required:true
         },
-        email:{
+        relation_InCharge:{
             type:String,
             required:true
         },
-        password:{
+        id_InCharge1:{
             type:String,
             required:true
+        },
+        id_InCharge2:{
+            type:String,
+            required:false
         }
 })
 

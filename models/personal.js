@@ -2,12 +2,8 @@ const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema
 
-const incharge = new Schema ({
+const admin = new Schema ({
 
-    parent_relation:{
-        type:String,
-        required:true
-    },
     first_name:{
         type:String,
         required:true
@@ -20,32 +16,12 @@ const incharge = new Schema ({
         type:Number,
         required:true
     },
-    sex:{
-        type:String,
-        required:true
-    },
     dateofbirth:{
         type:Date,
         required:true
     },
-    nationality:{
+    sector:{
         type:String,
-        required:true
-    },
-    address:{
-        type:String,
-        require:true
-    },
-    city:{
-        type:String,
-        require:true
-    },
-    postalcode:{
-        type:String,
-        require:true
-    },
-    phonenumber:{
-        type:Number,
         require:true
     },
     email:{
@@ -56,10 +32,6 @@ const incharge = new Schema ({
         type:String,
         required:true
     },
-    idstudent1:{
-        type:String,
-        require:true
-    }
 })
 
 const InCharge = mongoose.model("Incharge", incharge)
