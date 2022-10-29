@@ -36,7 +36,10 @@ router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessag
 ],ctrlstudents.editarEstudiante)
 
 //delete
-router.delete('/delete/:id',ctrlstudents.eliminarEstudiante)
-router.delete('/logout',ctrlstudents.logoutEstudiante)
+router.delete('/delete/session',cerrarSession)
+router.delete('/delete/:id',eliminarItem)
+router.delete('/deletecollection',deleteAll)
+router.delete('/deletecookie',eliminarCookie)
+//router.delete('/logout',logOut)
 
 module.exports = router 
