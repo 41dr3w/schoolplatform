@@ -43,10 +43,6 @@ router.post('/create',[check("name").not().isEmpty().withMessage("please fill th
                        check("password").not().isEmpty().withMessage("please fill the password")
 ],crearItem)
 
-router.post('/login',[check("user").not().isEmpty().withMessage("please fill the user"),
-                      check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
-                      check("password").not().isEmpty().withMessage("please fill the password")
-],loginUsuario)
 /*router.post('/logintoken',[
     check("email").not().isEmpty().withMessage("Falta ingresar Mail").isEmail().withMessage("Mail Inexistente"),
     check("password").not().isEmpty().withMessage("Falta Mail")

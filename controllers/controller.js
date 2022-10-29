@@ -181,10 +181,6 @@ const result = await User.deleteMany({});
     res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
 }
 
-
-
-
-
 module.exports = {
                 savewithHash,
                 quoteAPI,
