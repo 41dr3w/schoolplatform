@@ -33,11 +33,11 @@ const student = new Schema ({
             type:String,
             required:true
         },
-        id_InCharge1:{
+        _idInCharge1:{
             type:String,
             required:true
         },
-        id_InCharge2:{
+        _idInCharge2:{
             type:String,
             required:false
         }
