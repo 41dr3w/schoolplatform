@@ -3,11 +3,11 @@ const bcrypt = require("bcryptjs")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
 
-const ctrlstudent = {
+const personalctrl = {
 
     //funciones para crear personal estudiantil
     //post C-reate
-    async crearEstudiante(req,res){
+    async createStudent(req,res){
     try {
 
         const err = validationResult(req)
@@ -33,21 +33,21 @@ const ctrlstudent = {
     },
 
     //get //funciones para tomar personal estudiantil info 
-    async verEstudiantes(req, res){
+    async seeStudents(req, res){
     const user = await Student.find()
     res.status(200).json({user})
     },
-    async verEstudiante(req, res){
+    async seeStudent(req, res){
     const user = await Student.findById(req.params.id)
     res.status(200).json({user})
     },
-    async busquedaEstudiante(req, res){
+    async searchStudent(req, res){
     const user = await Student.findOne({second_name:req.params.name})
     res.status(200).json({user})
     },
 
     //put U-pdate
-    async editarEstudiante(req, res){
+    async editStudent(req, res){
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
@@ -68,7 +68,7 @@ const ctrlstudent = {
     },
 
     //delete D-elete
-    async eliminarEstudiante(req, res){
+    async deleteStudent(req, res){
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
@@ -84,4 +84,4 @@ const ctrlstudent = {
 
 }
 
-module.exports = {controllers}
+module.exports = {personalctrl}

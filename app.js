@@ -7,6 +7,8 @@ const session = require("express-session")
 const app = express()
 
 const indexRouter = require("./routes/index")
+//const sistemRouter = require("./routes/ctrlsistem")
+//const personalRouter = require("./routes/personal")
 const { conect } = require("./db/db")
 
 //configuraciones
@@ -22,6 +24,8 @@ app.use(session({     //si quiero mantener un usuario en sesion, se guarda la se
 
 
 app.use('/',indexRouter)
+//app.use('/',sistemRouter)
+//app.use('/',personalRouter)
 conect()
 
 module.exports = app;

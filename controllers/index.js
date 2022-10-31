@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
 
-const ctrlstudent = {
+const generalctrl = {
 
     //get de funciones para buscar deudas/aranceles 
     // para los padres encargados de los alumnos y el personal administrativo
@@ -45,4 +45,4 @@ const ctrlstudent = {
 
 }
 
-module.exports = {controllers}
+module.exports = {generalctrl}
