@@ -11,7 +11,6 @@ const routine = 0;
 
 const ctrlsistem = {
 
-
     //post C-reate
     async crearItem(req,res){
         try {

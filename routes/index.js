@@ -1,4 +1,3 @@
-
 const express = require("express")
 const router = express.Router()
 const {ctrlstudents} = require("../controllers/student")
@@ -7,39 +6,19 @@ const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
 
-//get
-router.get('/see',ctrlstudents.verEstudiantes)
-router.get('/see/:id',validarid,ctrlstudents.verEstudiante)
-router.get('/search/:name',ctrlstudents.busquedaEstudiante)
 
-//post
-router.post('/create',[ check("first_name").not().isEmpty().withMessage("please fill the first_name"),
-                        check("second_name").not().isEmpty().withMessage("please fill the second_name"),
-                        check("age").not().isEmpty().withMessage("please fill the age"),  
-                        check("dni").not().isEmpty().withMessage("please fill the dni"),  
-                        check("nationality").not().isEmpty().withMessage("please fill the nationality"),
-                        check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
-                        check("password").not().isEmpty().withMessage("please fill the password")  
-],ctrlstudents.crearEstudiante)
+//get de deudas para los padres encargados de los alumnos y el personal administrativo
+
+//post el login y logout para los padres encargados de los alumnos y el personal administrativo
+
 router.post('/login',[check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
                       check("password").not().isEmpty().withMessage("please fill the password")
 ],ctrlstudents.loginEstudiante)
+//router.delete('/logout',logOut)
 
-//put
-router.put('/edit/:id',validarid,[check("first_name").not().isEmpty().withMessage("please fill the first_name"),
-                                 check("second_name").not().isEmpty().withMessage("please fill the second_name"),
-                                 check("age").not().isEmpty().withMessage("please fill the age"),  
-                                 check("dni").not().isEmpty().withMessage("please fill the dni"),  
-                                 check("nationality").not().isEmpty().withMessage("please fill the nationality"),
-                                 check("email").not().isEmpty().withMessage("please fill the email").isEmail().withMessage("The email doesn't exist"),
-                                 check("password").not().isEmpty().withMessage("please fill the password")
-],ctrlstudents.editarEstudiante)
 
 //delete
 router.delete('/delete/session',cerrarSession)
-router.delete('/delete/:id',eliminarItem)
-router.delete('/deletecollection',deleteAll)
 router.delete('/deletecookie',eliminarCookie)
-//router.delete('/logout',logOut)
 
 module.exports = router 
