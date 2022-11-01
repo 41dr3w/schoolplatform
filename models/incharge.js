@@ -20,12 +20,12 @@ const incharge = new Schema ({
         type:Number,
         required:true
     },
-    sex:{
-        type:String,
-        required:true
-    },
     dateofbirth:{
         type:Date,
+        required:true
+    },
+    sex:{
+        type:String,
         required:true
     },
     nationality:{

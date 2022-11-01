@@ -1,18 +1,32 @@
 const express = require("express")
 const router = express.Router()
-const {personalctrl} = require("../controllers/personal")
-const {validarid} = require("../middlewares/validarid")
+const {student,incharge} = require("../controllers/personal")
+const {validaridinc, validaridstu} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
-//crear personal estudiantil
-router.get('/createstudent',personalctrl.createStudent)
-router.put('/updatestudent',validarid,personalctrl.editStudent) //add middleware
-router.delete('/delete/:id',validarid,personalctrl.deleteStudent)  //add middleware
+//-----------------------------------------------------------------------------------------------------------------------
 
 //get //personal estudiantil info 
-router.get('/see',personalctrl.seeStudents)
-router.get('/see/:id',validarid,personalctrl.seeStudent)
-router.get('/search/:name',personalctrl.searchStudent)
+router.get('/seestudents',student.seeAll)
+router.get('/seestudent/:id',validaridstu,student.seeOne)
+router.get('/searchstudent/:name',student.search)
 
+//crear personal estudiantil
+router.post('/createstudent',student.create)
+router.put('/editestudent/:id',validaridstu,student.edit) //add middleware
+router.delete('/deletestudent/:id',validaridstu,student.delete)  //add middleware
 
+//------------------------------------------------------------------------------------------------------------------------
+
+//get //personal Padres Encargados info 
+router.get('/seeallincharge',incharge.seeAll)
+router.get('/seeincharge/:id',validaridinc,incharge.seeOne)
+router.get('/searchincharge/:name',incharge.search)
+
+//crear personal de Padres Encargados de los alumnos
+router.post('/createincharge',incharge.create)
+router.put('/editincharge/:id',validaridinc,incharge.edit) //add middleware
+router.delete('/deleteincharge/:id',validaridinc,incharge.delete)  //add middleware
+
+module.exports = router 

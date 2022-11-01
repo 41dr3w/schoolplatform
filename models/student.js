@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const { options } = require("../routes")
+//const { options } = require("../routes")
 
 const Schema = mongoose.Schema
 

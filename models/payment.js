@@ -8,53 +8,49 @@ const payannualstu = new Schema ({
         type:String,
         required:true
     },
-    _idmouth1:{
+    _idmonth1:{
         type:String,
         required:true
     },
-    _idmouth2:{
+    _idmonth2:{
         type:String,
         required:true
     },
-    _idmouth3:{
+    _idmonth3:{
         type:String,
         required:true
     },
-    _idmouth4:{
+    _idmonth4:{
         type:String,
         required:true
     },
-    _idmouth5:{
+    _idmonth5:{
         type:String,
         required:true
     },
-    _idmouth6:{
+    _idmonth6:{
         type:String,
         required:true
     },
-    _idmouth7:{
+    _idmonth7:{
         type:String,
         required:true
     },
-    _idmouth8:{
+    _idmonth8:{
         type:String,
         required:true
     },
-    _idmouth9:{
+    _idmonth9:{
         type:String,
         required:true
     },
-    _idmouth10:{
+    _idmonth10:{
         type:String,
         required:true
     },
-    _idtariff:{
+    _idstudent:{
         type:String,
         required:true
-    },
-    _idtariff_head:{
-        type:String,
-        require:true
     }
 })
 
