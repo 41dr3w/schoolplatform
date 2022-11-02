@@ -16,9 +16,10 @@ const student = {
         if(err.isEmpty()){
             //let salt = bcrypt.genSaltSync(10)
             //let hash = bcrypt.hashSync(req.body.password,salt)
-            const incharge = new Student({first_name:req.body.first_name,
+            const student = new Student({first_name:req.body.first_name,
                                     last_name:req.body.last_name,
                                     dni:req.body.dni,
+                                    grade:req.body.grade,
                                     dateofbirth:req.body.dateofbirth,
                                     sex:req.body.sex,
                                     nationality: req.body.nationality,
@@ -26,8 +27,8 @@ const student = {
                                     _idInCharge1:"-",
                                     _idInCharge2:"-"
                                     }) /*password:hash*/
-            await incharge.save()
-            res.status(201).json({incharge})
+            await student.save()
+            res.status(201).json({student})
         }
         else {
             res.status(501).json(err)
@@ -43,7 +44,7 @@ const student = {
     res.status(200).json({user})
     },
     async seeOne(req, res){
-    const student= await Student.findById(req.params.id)
+    const student = await Student.findById(req.params.id)
     res.status(200).json({student})
     },
     async search(req, res){
@@ -59,6 +60,7 @@ const student = {
             await Student.findByIdAndUpdate(req.params.id,{first_name:req.body.first_name,
                                                         last_name:req.body.last_name,
                                                         dni:req.body.dni,
+                                                        grade:req.body.grade,
                                                         dateofbirth:req.body.dateofbirth,
                                                         sex:req.body.sex,
                                                         nationality: req.body.nationality,
@@ -108,6 +110,7 @@ const incharge = {
                     first_name:req.body.first_name,
                     last_name:req.body.last_name,
                     dni:req.body.dni,
+                    grade:req.body.grade,
                     dateofbirth:req.body.dateofbirth,
                     sex:req.body.sex,
                     nationality: req.body.nationality,
@@ -117,7 +120,7 @@ const incharge = {
                     phonenumber:req.body.phonenumber,
                     email:req.body.email,
                     password:hash,
-                    idstudent1:"-"}) 
+                    _idstudent1:"-"}) 
 
                 await incharge.save()
                 res.status(201).json({incharge})

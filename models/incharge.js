@@ -56,10 +56,10 @@ const incharge = new Schema ({
         type:String,
         required:true
     },
-    idstudent1:{
-        type:String,
-        require:true
-    }
+    _idstudent1:[{
+        type: Schema.Types.ObjectId, 
+        ref: 'Student' 
+    }],
 })
 
 const InCharge = mongoose.model("Incharge", incharge)

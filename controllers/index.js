@@ -179,6 +179,8 @@ const payYear = {
     },
 }  
     
+//-------------------------------------------------------------
+
 const generalctrl = {
     
     // para los padres encargados de los alumnos y el personal administrativo

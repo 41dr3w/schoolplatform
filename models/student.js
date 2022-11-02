@@ -17,6 +17,10 @@ const student = new Schema ({
             type:Number,
             required:true
         },
+        grade:{
+            type:String,
+            required:true
+        },
         dateofbirth:{
             type:Date,
             required:true
@@ -33,14 +37,14 @@ const student = new Schema ({
             type:String,
             required:true
         },
-        _idInCharge1:{
-            type:String,
-            required:true
-        },
-        _idInCharge2:{
-            type:String,
-            required:false
-        }
+        _idInCharge1:[{
+            type: Schema.Types.ObjectId, 
+            ref: 'InCharge' 
+        }],
+        _idInCharge2:[{
+            type: Schema.Types.ObjectId, 
+            ref: 'InCharge' 
+        }],
 })
 
 const Student = mongoose.model("Student", student)
