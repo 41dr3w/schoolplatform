@@ -27,6 +27,7 @@ const student = new Schema ({
         },
         sex:{
             type:String,
+            enum:["male","female"],
             required:true
         },
         nationality:{
@@ -37,16 +38,16 @@ const student = new Schema ({
             type:String,
             required:true
         },
-        _idInCharge1:[{
-            type: Schema.Types.ObjectId, 
+        _idInCharge:[{
+            type: Schema.Types.ObjectId,    
             ref: 'InCharge' 
-        }],
-        _idInCharge2:[{
-            type: Schema.Types.ObjectId, 
+            },
+            {
+            type: Schema.Types.ObjectId,    
             ref: 'InCharge' 
-        }],
+            }
+        ]
 })
 
-const Student = mongoose.model("Student", student)
+const Student = mongoose.model("Student",student)
 module.exports = {Student}
-

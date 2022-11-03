@@ -1,15 +1,17 @@
 
 const {Student} = require("../models/student")
-const {User} = require("../models/user")
+const {InCharge} = require("../models/incharge")
+const { Admins } = require("../models/personal")
 const bcrypt = require("bcryptjs")
 const axios = require("axios")
 const {validationResult} = require("express-validator")
 const { default: mongoose, model } = require("mongoose")
 const {routinename, Routine} = require("../helpers/routines")
 const { response } = require("express")
+const { incharge } = require("./personal")
 const routine = 0;
 
-const ctrlsistem = {
+const ctrlsistemstu = {
 
     //post C-reate
     async crearItem(req,res){
@@ -152,13 +154,32 @@ const ctrlsistem = {
     async eliminarCookie(req, res){
         res.clearCookie("ItemInSession") //cuidado que arriba esta con otro nombre
         res.json({msg:'cookie deleted'})
-    }
-    /*,async deleteAll(req, res){
+    },
+    async deleteAll(req, res){
     //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
-    const result = await User.deleteMany({});
+    const result = await Student.deleteMany({});
         res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
-    }*/
-    
+    }
 }
 
-module.exports = {ctrlsistem}
+const ctrlsisteminc = {
+
+    async deleteAll(req, res){
+        //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
+        const result = await InCharge.deleteMany({});
+            res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
+        }
+
+}
+
+const ctrlsistemadm = {
+
+    async deleteAll(req, res){
+        //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
+        const result = await Admins.deleteMany({});
+            res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
+        }
+
+}
+
+module.exports = {ctrlsistemstu, ctrlsisteminc, ctrlsistemadm}

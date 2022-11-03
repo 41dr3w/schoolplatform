@@ -25,7 +25,8 @@ const incharge = new Schema ({
         required:true
     },
     sex:{
-        type:String,
+        type:"String",
+        enum:["male","female"],
         required:true
     },
     nationality:{
@@ -55,11 +56,7 @@ const incharge = new Schema ({
     password:{
         type:String,
         required:true
-    },
-    _idstudent1:[{
-        type: Schema.Types.ObjectId, 
-        ref: 'Student' 
-    }],
+    }
 })
 
 const InCharge = mongoose.model("Incharge", incharge)

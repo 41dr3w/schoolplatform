@@ -20,9 +20,19 @@ const admins = new Schema ({
         type:Date,
         required:true
     },
+    sex:{
+        type:String,
+        enum:["male","female"],
+        required:true
+    },
     sector:{
         type:String,
-        require:true
+        enum:["cobranzas","administrativo","secretaria","direccion"],
+        required:true
+    },
+    phonenumber:{
+        type:Number,
+        required:true
     },
     email:{
         type:String,
@@ -31,8 +41,8 @@ const admins = new Schema ({
     password:{
         type:String,
         required:true
-    },
+    }
 })
 
 const Admins = mongoose.model("Admins", admins)
-module.exports = {InCharge}
+module.exports = {Admins}
