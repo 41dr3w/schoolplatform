@@ -1,12 +1,21 @@
 const express = require("express")
 const router = express.Router()
-const {payMonth,payYear} = require("../controllers/")
+const {payMonth,payYear, adminctrl} = require("../controllers/")
 const {validaridpas,validaridpms} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
 
-//get de deudas para los padres encargados de los alumnos y el personal administrativo
+//get for debts for incharge and admins
+
+//llenar
+
+
+
+//funtional endpoint to operation for admins
+//get all students from the incharge
+router.get('/studentsof/:id',adminctrl.studentsOf) 
+
 //-----------------------------------------------------------------------------------------------------------------------
 
 //get //personal estudiantil info 

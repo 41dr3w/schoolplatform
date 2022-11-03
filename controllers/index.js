@@ -3,9 +3,11 @@ const {PayMonthStu,PayAnnualStu} = require("../models/payment")
 const bcrypt = require("bcryptjs")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
+const { incharge } = require("./personal")
+const { InCharge } = require("../models/incharge")
 
 
-//get de funciones para buscar deudas/aranceles 
+//colecciones sobre deudas/aranceles mensuales y anuales
 const payMonth = {
 
     //funciones para crear personal estudiantil
@@ -178,13 +180,31 @@ const payYear = {
         }
     },
 }  
-    
+
+//-------------------------------------------------------------
+
+//get de funciones para buscar los alumnos pertenecientes a un mismo padre
+
+const adminctrl = {
+
+    async studentsOf(req, res){
+        const students = await Student.find({_idInCharge:req.params.id})
+        const incharge = await InCharge.findById(req.params.id)
+        res.status(200).json({incharge,students})
+    }
+
+}
+
 //-------------------------------------------------------------
 
 const generalctrl = {
     
     // para los padres encargados de los alumnos y el personal administrativo
-        //gets R-ead
+    //gets R-ead
+
+
+
+
 
     //funciones post para el login y logout para los padres encargados de los alumnos y el personal administrativo
     async login(req,res){
@@ -222,4 +242,4 @@ const generalctrl = {
 
 }
 
-module.exports = {payMonth,payYear,generalctrl}
+module.exports = {payMonth,payYear,generalctrl,adminctrl}

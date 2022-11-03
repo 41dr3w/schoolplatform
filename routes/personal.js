@@ -42,4 +42,6 @@ router.post('/createadmin',admins.create)
 router.put('/editadmin/:id',validaridadm,admins.edit) //add middleware
 router.delete('/deleteadmin/:id',validaridadm,admins.delete)  //add middleware
 
+
+
 module.exports = router 
