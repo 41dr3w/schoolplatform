@@ -1,7 +1,7 @@
 const {Student} = require("../models/student")
 const {InCharge} = require("../models/incharge")
-const {PayAnnualStu} = require("../models/payment")
-const {PayMonthStu} = require("../models/payment")
+const {PayAnnualStu} = require("../models/paymtAnnual")
+const {PayMonthStu} = require("../models/paymtMonth")
 const { Admins } = require("../models/personal")
 
 const validaridstu = async (req,res,next)=>{

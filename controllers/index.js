@@ -1,10 +1,9 @@
 const {Student} = require("../models/student")
-const {PayMonthStu,PayAnnualStu} = require("../models/payment") 
-const bcrypt = require("bcryptjs")
+const {PayMonthStu} = require("../models/paymtMonth") 
+const {PayAnnualStu} = require("../models/paymtAnnual") 
+const { InCharge } = require("../models/incharge")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
-const { incharge } = require("./personal")
-const { InCharge } = require("../models/incharge")
 
 
 //colecciones sobre deudas/aranceles mensuales y anuales
@@ -191,6 +190,12 @@ const adminctrl = {
         const students = await Student.find({_idInCharge:req.params.id})
         const incharge = await InCharge.findById(req.params.id)
         res.status(200).json({incharge,students})
+    },
+
+    async debtOfMonth(req, res){   //SOLUCIONAR
+        const student_paymonth = await PayMonthStu.find({month:req.params.id})   //month:req.params.month
+         //month:req.params.month
+        res.status(200).json({student_paymonth})  
     }
 
 }

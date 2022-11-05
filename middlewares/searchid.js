@@ -1,7 +1,7 @@
 const {Student} = require("../models/student")
 const {InCharge} = require("../models/incharge")
-const {PayAnnualStu} = require("../models/payment")
-const {PayMonthStu} = require("../models/payment")
+const {PayAnnualStu} = require("../models/paymtAnnual")
+const {PayMonthStu} = require("../models/paymtMonth")
 
 const searchidinc = async (req,res,next)=>{
     const item = await InCharge.findById(req.body._idInCharge1)/*||req.body._idInCharge2)*/

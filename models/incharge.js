@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const { Student } = require("./student")
 
 const Schema = mongoose.Schema
 
@@ -56,7 +57,11 @@ const incharge = new Schema ({
     password:{
         type:String,
         required:true
-    }
+    },
+    _idstudent:[{
+        type:Schema.Types.ObjectId,
+        ref:Student
+    }]
 })
 
 const InCharge = mongoose.model("Incharge", incharge)

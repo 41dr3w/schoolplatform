@@ -15,6 +15,7 @@ const auth = require("../middlewares/auth")
 //funtional endpoint to operation for admins
 //get all students from the incharge
 router.get('/studentsof/:id',adminctrl.studentsOf) 
+router.get('/paymonthstudent/:id',adminctrl.debtOfMonth) 
 
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -52,6 +53,6 @@ router.post('/login',[check("email").not().isEmpty().withMessage("please fill th
 
 //delete
 router.delete('/delete/session',cerrarSession)
-router.delete('/deletecookie',eliminarCookie)
-*/
+router.delete('/deletecookie',eliminarCookie)*/
+
 module.exports = router 
