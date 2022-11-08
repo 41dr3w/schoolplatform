@@ -1,14 +1,9 @@
 const mongoose = require("mongoose")
-const { PayAnnualStu } = require("./paymtAnnual")
 const { Student } = require("./student")
 const Schema = mongoose.Schema
 
-const paymonthstu = new Schema ({
 
-    month:{
-        type:String,
-        required:true
-    },
+const monthpaid = new Schema({
     paid:{
         type:Boolean,
         default:false,
@@ -21,18 +16,21 @@ const paymonthstu = new Schema ({
     quota_value:{
         type:Number,
         required:true
+    }
+})
+
+const paymentstu = new Schema ({
+
+    year:{
+        type:String,
+        required:true
     },
+    months:[monthpaid],
     _idstudent:[{
         type: Schema.Types.ObjectId,
         ref: Student
-    }],
-    _idtariff_head:[{
-        type: Schema.Types.ObjectId,
-        ref: PayAnnualStu
     }]
-
 })
 
-const PayMonthStu = mongoose.model("PayMonthStu", paymonthstu)
-module.exports = {PayMonthStu}
-
+const PaymentStu = mongoose.model("PaymentStu", paymentstu)
+module.exports = {PaymentStu}

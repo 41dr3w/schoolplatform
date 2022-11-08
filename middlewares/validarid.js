@@ -1,7 +1,6 @@
 const {Student} = require("../models/student")
 const {InCharge} = require("../models/incharge")
-const {PayAnnualStu} = require("../models/paymtAnnual")
-const {PayMonthStu} = require("../models/paymtMonth")
+const {PaymentStu} = require("../models/payment")
 const { Admins } = require("../models/personal")
 
 const validaridstu = async (req,res,next)=>{
@@ -22,8 +21,8 @@ const validaridinc = async (req,res,next)=>{
     }
 }    
 
-const validaridpas = async (req,res,next)=>{
-    const item = await PayAnnualStu.findById(req.params.id)
+const validaridpmt = async (req,res,next)=>{
+    const item = await PaymentStu.findById(req.params.id)
     if(item != null){
         next();
     } else {
@@ -31,14 +30,6 @@ const validaridpas = async (req,res,next)=>{
     }
 }    
 
-const validaridpms = async (req,res,next)=>{
-    const item = await PayMonthStu.findById(req.params.id)
-    if(item != null){
-        next();
-    } else {
-        res.json({msg:"id invalido"})
-    }
-}  
 
 const validaridadm = async (req,res,next)=>{
     const item = await Admins.findById(req.params.id)
@@ -50,4 +41,4 @@ const validaridadm = async (req,res,next)=>{
 }  
 
 
-module.exports = {validaridpas,validaridpms,validaridstu,validaridinc,validaridadm}
+module.exports = {validaridpmt,validaridstu,validaridinc,validaridadm}

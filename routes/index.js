@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
-const {payMonth,payYear, adminctrl} = require("../controllers/")
-const {validaridpas,validaridpms} = require("../middlewares/validarid")
+const {payment, adminctrl} = require("../controllers/")
+const {validaridpmt} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
@@ -15,33 +15,21 @@ const auth = require("../middlewares/auth")
 //funtional endpoint to operation for admins
 //get all students from the incharge
 router.get('/studentsof/:id',adminctrl.studentsOf) 
-router.get('/paymonthstudent/:id',adminctrl.debtOfMonth) 
-
+router.get('/paymonthstudent/:id/:info',adminctrl.debtOfMonths) 
+router.get('/paymonthstudent/:id/:month/:info',adminctrl.debtOfMonth) 
 //-----------------------------------------------------------------------------------------------------------------------
 
 //get //personal estudiantil info 
-router.get('/seeallpaymonths',payMonth.seeAll)
-router.get('/seepaymonth/:id',validaridpms,payMonth.seeOne)
-router.get('/searchpaymonth/:month',payMonth.search)
+router.get('/seeallpaymonths',payment.seeAll)
+router.get('/seepaymonth/:id',validaridpmt,payment.seeOne)
+router.get('/searchpaymonth/:month',payment.search)
 
 //crear personal estudiantil
-router.post('/createpaymonth',payMonth.create)
-router.put('/editpaymonth/:id',validaridpms,payMonth.edit) //add middleware
-router.delete('/deletepaymonth/:id',validaridpms,payMonth.delete)  //add middleware
+router.post('/createpaymonth',payment.create)
+router.put('/editpaymonth/:id',validaridpmt,payment.edit) //add middleware
+router.delete('/deletepaymonth/:id',validaridpmt,payment.delete)  //add middleware
 
 //------------------------------------------------------------------------------------------------------------------------
-
-//get //personal Padres Encargados info 
-router.get('/seeallpayyears',payYear.seeAll)
-router.get('/seepayyear/:id',validaridpas,payYear.seeOne)
-router.get('/searchpayyear/:year',payYear.search)
-
-//crear personal de Padres Encargados de los alumnos
-router.post('/createpayyear',payYear.create)
-router.put('/editpayyear/:id',validaridpas,payYear.edit) //add middleware
-router.delete('/deletepayyear/:id',validaridpas,payYear.delete)  //add middleware
-
-
 /*
 //post el login y logout para los padres encargados de los alumnos y el personal administrativo
 

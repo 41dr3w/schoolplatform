@@ -1,13 +1,12 @@
 const {Student} = require("../models/student")
-const {PayMonthStu} = require("../models/paymtMonth") 
-const {PayAnnualStu} = require("../models/paymtAnnual") 
+const {PaymentStu} = require("../models/payment") 
 const { InCharge } = require("../models/incharge")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
 
 
 //colecciones sobre deudas/aranceles mensuales y anuales
-const payMonth = {
+const payment = {
 
     //funciones para crear personal estudiantil
     //post C-reate
@@ -16,16 +15,17 @@ const payMonth = {
 
         const err = validationResult(req)
         if(err.isEmpty()){
-            const paymonth = new PayMonthStu({
-                "month":req.body.month,
-                "paid":req.body.paid,
-                "quota_number":req.body.quota_number,
-                "quota_value":req.body.quota_value,
-                "_idstudent":req.body._idstudent, 
-                "_idtariff_head":req.body._idtariff_head 
-            }) /*password:hash*/
-            await paymonth.save()
-            res.status(201).json({paymonth})
+            const payment = new PaymentStu({
+                "year":req.body.year,
+                "months":[{
+                    "paid":req.body.paid,
+                    "quota_number":req.body.quota_number,
+                    "quota_value":req.body.quota_value,
+                }],
+                "_idstudent":req.body._idstudent
+            })
+            await payment.save()
+            res.status(201).json({payment})
         }
         else {
             res.status(501).json(err)
@@ -37,16 +37,16 @@ const payMonth = {
 
     //get //funciones para tomar personal estudiantil info 
     async seeAll(req, res){
-    const paymonth = await PayMonthStu.find()
-    res.status(200).json({paymonth})
+    const payment = await PaymentStu.find()
+    res.status(200).json({payment})
     },
     async seeOne(req, res){
-    const paymonth= await PayMonthStu.findById(req.params.id)
-    res.status(200).json({paymonth})
+    const payment= await PaymentStu.findById(req.params.id)
+    res.status(200).json({payment})
     },
     async search(req, res){//arreglar problema de que lo encuentra pero lo muestra como nulo, o status 202 result null
-        const paymonth = await PayMonthStu.findOne({month:req.params.month})
-    res.status(200).json({paymonth})
+        const payment = await PaymentStu.findOne({month:req.params.month})
+    res.status(200).json({payment})
     },
 
     //put U-pdate
@@ -54,13 +54,14 @@ const payMonth = {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            await PayMonthStu.findByIdAndUpdate(req.params.id,{
-                "month":req.body.month,
+            await PaymentStu.findByIdAndUpdate(req.params.id,{
+                "year":req.body.year,
+                "months":[{
                 "paid":req.body.paid,
                 "quota_number":req.body.quota_number,
                 "quota_value":req.body.quota_value,
-                "_idstudent":req.body._idstudent, 
-                "_idtariff_head":req.body._idtariff_head
+                }],
+                "_idstudent":req.body._idstudent
             })
             res.status(201).json({msg:"info updated"})
         } else {
@@ -76,8 +77,8 @@ const payMonth = {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            paymonth = await PayMonthStu.findByIdAndDelete(req.params.id)
-            res.status(201).json({msg:"paid month deleted", paymonth})
+            payment = await PaymentStu.findByIdAndDelete(req.params.id)
+            res.status(201).json({msg:"paid month deleted", payment})
         } else {
             res.status(501).json(err)
         }
@@ -88,6 +89,7 @@ const payMonth = {
 
 }
 
+/*
 const payYear = {
     //funciones para crear personal estudiantil
     //post C-reate
@@ -179,7 +181,7 @@ const payYear = {
         }
     },
 }  
-
+*/
 //-------------------------------------------------------------
 
 //get de funciones para buscar los alumnos pertenecientes a un mismo padre
@@ -191,13 +193,17 @@ const adminctrl = {
         const incharge = await InCharge.findById(req.params.id)
         res.status(200).json({incharge,students})
     },
+    
+    async debtOfMonth(req, res){   
+        const student_paymonth = await PaymentStu.find({_idstudent:req.params.id, month:req.params.month},`${req.params.info}`) 
+        res.status(200).json({student_paymonth})  
+    },
 
-    async debtOfMonth(req, res){   //SOLUCIONAR
-        const student_paymonth = await PayMonthStu.find({month:req.params.id})   //month:req.params.month
-         //month:req.params.month
+    async debtOfMonths(req, res){  
+        const student_paymonth = await PaymentStu.find({_idstudent:req.params.id},`${req.params.info}`) 
         res.status(200).json({student_paymonth})  
     }
-
+    
 }
 
 //-------------------------------------------------------------
@@ -247,4 +253,4 @@ const generalctrl = {
 
 }
 
-module.exports = {payMonth,payYear,generalctrl,adminctrl}
+module.exports = {payment,generalctrl,adminctrl}

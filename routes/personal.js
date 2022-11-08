@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const {student,incharge, admins} = require("../controllers/personal")
 const {validaridinc, validaridstu, validaridadm} = require("../middlewares/validarid")
-const {searchidinc, searchidpms, searchidpas} = require("../middlewares/searchid") //PROBAR
+const {searchidinc, searchidpmt} = require("../middlewares/searchid") //PROBAR
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
