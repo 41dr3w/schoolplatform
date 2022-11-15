@@ -3,33 +3,32 @@ const { Student } = require("./student")
 const Schema = mongoose.Schema
 
 
-const monthpaid = new Schema({
-    paid:{
-        type:Boolean,
-        default:false,
-        required:true
-    },
-    quota_number:{
-        type:Number,
-        required:true
-    },
-    quota_value:{
-        type:Number,
-        required:true
-    }
-})
-
 const paymentstu = new Schema ({
-
     year:{
         type:String,
         required:true
     },
-    months:[monthpaid],
-    _idstudent:[{
+    months:[{
+        month:{
+            type:String,
+            required:false
+        },
+        paid:{
+            type:Boolean,
+            required:false
+        },
+        quota_number:{
+            type:String, 
+            required:false
+        },
+        quota_value:{
+            type:String,
+            required:false
+        }}],
+    _idstudent:{
         type: Schema.Types.ObjectId,
         ref: Student
-    }]
+    }
 })
 
 const PaymentStu = mongoose.model("PaymentStu", paymentstu)

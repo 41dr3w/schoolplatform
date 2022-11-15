@@ -1,5 +1,6 @@
 const {Student} = require("../models/student")
 const {PaymentStu} = require("../models/payment") 
+//const {MonthPaid} = require("../models/payment") 
 const { InCharge } = require("../models/incharge")
 const {validationResult} = require("express-validator")
 const { default: mongoose } = require("mongoose")
@@ -11,28 +12,23 @@ const payment = {
     //funciones para crear personal estudiantil
     //post C-reate
     async create(req,res){
-    try {
+        try {
 
-        const err = validationResult(req)
-        if(err.isEmpty()){
-            const payment = new PaymentStu({
-                "year":req.body.year,
-                "months":[{
-                    "paid":req.body.paid,
-                    "quota_number":req.body.quota_number,
-                    "quota_value":req.body.quota_value,
-                }],
-                "_idstudent":req.body._idstudent
-            })
-            await payment.save()
-            res.status(201).json({payment})
+            //nodes:[{id:req.body.nodes.id}],
+
+            const err = validationResult(req)
+            if(err.isEmpty()){
+
+                const payment = new PaymentStu(req.body)
+                await payment.save()
+                res.status(201).json({payment})
+            }
+            else {
+                res.status(501).json(err)
+            }
+        }catch(error) {
+            res.status(501).json({error})
         }
-        else {
-            res.status(501).json(err)
-        }
-    } catch(error) {
-        res.status(501).json({error})
-    }
     },
 
     //get //funciones para tomar personal estudiantil info 
@@ -45,7 +41,7 @@ const payment = {
     res.status(200).json({payment})
     },
     async search(req, res){//arreglar problema de que lo encuentra pero lo muestra como nulo, o status 202 result null
-        const payment = await PaymentStu.findOne({month:req.params.month})
+        const payment = await PaymentStu.findOne({month})
     res.status(200).json({payment})
     },
 
@@ -89,99 +85,6 @@ const payment = {
 
 }
 
-/*
-const payYear = {
-    //funciones para crear personal estudiantil
-    //post C-reate
-    async create(req,res){
-        try {
-            const err = validationResult(req)
-            if(err.isEmpty()){
-                const payyear = new PayAnnualStu({
-                    "year":req.body.year,
-                    "_idmonth1":req.body._idmonth1,
-                    "_idmonth2":req.body._idmonth2,
-                    "_idmonth3":req.body._idmonth3,
-                    "_idmonth4":req.body._idmonth4,
-                    "_idmonth5":req.body._idmonth5,
-                    "_idmonth6":req.body._idmonth6,
-                    "_idmonth7":req.body._idmonth7,
-                    "_idmonth8":req.body._idmonth8,
-                    "_idmonth9":req.body._idmonth9,
-                    "_idmonth10":req.body._idmonth10,
-                    "_idstudent":req.body._idstudent 
-                }) 
-
-                await payyear.save()
-                res.status(201).json({payyear})
-            }
-            else {
-                res.status(501).json(err)
-            }
-        } catch(error) {
-            res.status(501).json({error})
-        }
-    },
-
-    //get //funciones para tomar personal estudiantil info 
-    async seeAll(req, res){
-    const payyears = await PayAnnualStu.find()
-    res.status(200).json({payyears})
-    },
-    async seeOne(req, res){
-    const payyear= await PayAnnualStu.findById(req.params.id)
-    res.status(200).json({payyear})
-    },
-    async search(req, res){
-        const payyear = await PayAnnualStu.findOne({year:req.params.year})
-    res.status(200).json({payyear})
-    },
-
-    //put U-pdate
-    async edit(req, res){
-    try {
-        const err = validationResult(req)
-        if(err.isEmpty()){
-            await PayAnnualStu.findByIdAndUpdate(req.params.id,{
-                    "year":req.body.year,
-                    "_idmonth1":req.body._idmonth1,
-                    "_idmonth2":req.body._idmonth2,
-                    "_idmonth3":req.body._idmonth3,
-                    "_idmonth4":req.body._idmonth4,
-                    "_idmonth5":req.body._idmonth5,
-                    "_idmonth6":req.body._idmonth6,
-                    "_idmonth7":req.body._idmonth7,
-                    "_idmonth8":req.body._idmonth8,
-                    "_idmonth9":req.body._idmonth9,
-                    "_idmonth10":req.body._idmonth10,
-                    "_idstudent":req.body._idstudent  
-                })
-            res.status(201).json({msg:"info updated"})
-        } else {
-            res.status(501).json(err)
-        }
-    } catch(error) {
-        res.status(501).json({error})
-    }
-    },
-
-    //delete D-elete
-    async delete(req, res){   //REVISAR PORQUE FUNCIONA CUANDO SE BORRA UN FICHERO PERO ANUNCIA ERROR. CUANDO EN REALIDAD FUNCIONA BIEN
-    
-        try {
-            const err = validationResult(req)
-            if(err.isEmpty()){
-                payyear = await PayAnnualStu.findByIdAndDelete(req.params.id)
-                res.status(201).json({msg:"payyear deleted", payyear})
-            } else {
-                res.status(501).json(payyear)
-            }
-        }catch(error){
-            //res.status(501).json({error})
-        }
-    },
-}  
-*/
 //-------------------------------------------------------------
 
 //get de funciones para buscar los alumnos pertenecientes a un mismo padre
@@ -213,12 +116,8 @@ const generalctrl = {
     // para los padres encargados de los alumnos y el personal administrativo
     //gets R-ead
 
-
-
-
-
     //funciones post para el login y logout para los padres encargados de los alumnos y el personal administrativo
-    async login(req,res){
+   /* async login(req,res){
         try {
             const err = validationResult(req)
             if(err.isEmpty()){
@@ -249,7 +148,7 @@ const generalctrl = {
         res.clearCookie("UserInSession") //cuidado que tiene otro nombre arriba
         req.session.destroy()
         res.json({msg:"Session Closed"}) 
-    }
+    }*/
 
 }
 

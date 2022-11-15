@@ -2,6 +2,7 @@
 const {Student} = require("../models/student")
 const {InCharge} = require("../models/incharge")
 const { Admins } = require("../models/personal")
+const { PaymentStu } = require("../models/payment")
 const bcrypt = require("bcryptjs")
 const axios = require("axios")
 const {validationResult} = require("express-validator")
@@ -182,4 +183,13 @@ const ctrlsistemadm = {
 
 }
 
-module.exports = {ctrlsistemstu, ctrlsisteminc, ctrlsistemadm}
+const ctrlsistempay = {
+
+    async deleteAll(req, res){
+        //const colection = mongoose.Collection.collectionName.find(req.params.collectionName)
+        const result = await PaymentStu.deleteMany({});
+            res.status(200).json(`Deleted + ${result.deletedCount} + documents`)
+        }
+
+}
+module.exports = {ctrlsistemstu, ctrlsisteminc, ctrlsistemadm, ctrlsistempay}

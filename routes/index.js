@@ -20,14 +20,14 @@ router.get('/paymonthstudent/:id/:month/:info',adminctrl.debtOfMonth)
 //-----------------------------------------------------------------------------------------------------------------------
 
 //get //personal estudiantil info 
-router.get('/seeallpaymonths',payment.seeAll)
-router.get('/seepaymonth/:id',validaridpmt,payment.seeOne)
-router.get('/searchpaymonth/:month',payment.search)
+router.get('/seeallpayments',payment.seeAll)
+router.get('/seepayment/:id',validaridpmt,payment.seeOne)
+router.get('/searchpayment/:month',payment.search)
 
 //crear personal estudiantil
-router.post('/createpaymonth',payment.create)
-router.put('/editpaymonth/:id',validaridpmt,payment.edit) //add middleware
-router.delete('/deletepaymonth/:id',validaridpmt,payment.delete)  //add middleware
+router.post('/createpayment',payment.create)
+router.put('/editpayment/:id',validaridpmt,payment.edit) //add middleware
+router.delete('/deletepayment/:id',validaridpmt,payment.delete)  //add middleware
 
 //------------------------------------------------------------------------------------------------------------------------
 /*

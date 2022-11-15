@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const {ctrlsistemstu, ctrlsisteminc, ctrlsistemadm} = require("../controllers/ctrlsistem")
+const {ctrlsistemstu, ctrlsisteminc, ctrlsistemadm, ctrlsistempay} = require("../controllers/ctrlsistem")
 const {validarid} = require("../middlewares/validarid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
@@ -19,6 +19,7 @@ router.delete('/delete/:id',eliminarItem)*/
 router.delete('/deletecollectionstudent',ctrlsistemstu.deleteAll)
 router.delete('/deletecollectionincharge',ctrlsisteminc.deleteAll)
 router.delete('/deletecollectionadmins',ctrlsistemadm.deleteAll)
+router.delete('/deletecollectionpayment',ctrlsistempay.deleteAll)
 //router.delete('/delete/cookie',eliminarCookie)
 //router.delete('/logout',logOut)
 
