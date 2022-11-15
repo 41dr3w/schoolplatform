@@ -192,4 +192,5 @@ const ctrlsistempay = {
         }
 
 }
+
 module.exports = {ctrlsistemstu, ctrlsisteminc, ctrlsistemadm, ctrlsistempay}

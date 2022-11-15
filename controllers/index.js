@@ -152,4 +152,4 @@ const generalctrl = {
 
 }
 
-module.exports = {payment,generalctrl,adminctrl}
+module.exports = {payment,adminctrl,generalctrl}

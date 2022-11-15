@@ -6,28 +6,28 @@ const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
 
-//get for debts for incharge and admins
+//get for debts for incharge/parents and admins
 
 //llenar
 
-
-
 //funtional endpoint to operation for admins
 //get all students from the incharge
-router.get('/studentsof/:id',adminctrl.studentsOf) 
-router.get('/paymonthstudent/:id/:info',adminctrl.debtOfMonths) 
-router.get('/paymonthstudent/:id/:month/:info',adminctrl.debtOfMonth) 
+
+router
+.get('/studentsof/:id',adminctrl.studentsOf) 
+.get('/paymonthstudent/:id/:info',adminctrl.debtOfMonths) 
+.get('/paymonthstudent/:id/:month/:info',adminctrl.debtOfMonth) 
+
 //-----------------------------------------------------------------------------------------------------------------------
+ 
+//operar con info de pago/s
 
-//get //personal estudiantil info 
-router.get('/seeallpayments',payment.seeAll)
-router.get('/seepayment/:id',validaridpmt,payment.seeOne)
-router.get('/searchpayment/:month',payment.search)
-
-//crear personal estudiantil
-router.post('/createpayment',payment.create)
-router.put('/editpayment/:id',validaridpmt,payment.edit) //add middleware
-router.delete('/deletepayment/:id',validaridpmt,payment.delete)  //add middleware
+.get('/seeallpayments',payment.seeAll)   
+.get('/payment/:id',validaridpmt,payment.seeOne)
+.get('/searchpayment/:month',payment.search) //probar
+.post('/payment',payment.create)
+.put('/payment/:id',validaridpmt,payment.edit) //add middleware
+.delete('/payment/:id',validaridpmt,payment.delete);  //add middleware
 
 //------------------------------------------------------------------------------------------------------------------------
 /*
