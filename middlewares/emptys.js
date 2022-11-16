@@ -1,9 +1,7 @@
 
-const normalizeEmpty = (req, res, next) => {
-
-    err
-
+const normalizeEmpty =  async (req, res, next) => {
     try {
+        
         const year = req.params.year
         if(year.toString().length==4){next()}
         else { 
@@ -11,11 +9,11 @@ const normalizeEmpty = (req, res, next) => {
                 req.params.year=2022  //Date.year.toString()
             }
         }
-    next()
-    } catch (error) {
-        res.status(500).json(error)
-    }
-    
+        next()    
+    } catch (err) {
+        res.status(500).json(`msg:${err}`)
+    } 
+    next() 
 }
 
 module.exports = {normalizeEmpty}
