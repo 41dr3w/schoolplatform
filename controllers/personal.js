@@ -265,12 +265,12 @@ const admins = {
     },
 
     //delete D-elete
-    async delete(req, res){   //REVISAR PORQUE FUNCIONA CUANDO SE BORRA UN FICHERO PERO ANUNCIA ERROR. CUANDO EN REALIDAD FUNCIONA BIEN
+    async delete(req, res){  
     
         try {
             const err = validationResult(req)
             if(err.isEmpty()){
-                admin = await Admins.findByIdAndDelete(req.params.id)
+                const admin = await Admins.findByIdAndDelete(req.params.id)
                 res.status(201).json({msg:"admin deleted", admin})
             } else {
                 res.status(501).json(admin)

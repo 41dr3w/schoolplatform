@@ -30,7 +30,6 @@ const validaridpmt = async (req,res,next)=>{
     }
 }    
 
-
 const validaridadm = async (req,res,next)=>{
     const item = await Admins.findById(req.params.id)
     if(item != null){

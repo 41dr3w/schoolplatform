@@ -11,12 +11,12 @@ const auth = require("../middlewares/auth")
 //llenar
 
 //funtional endpoint to operation for admins
-//get all students from the incharge
 
 router
-.get('/studentsof/:id',adminctrl.studentsOf) 
-.get('/paymonthstudent/:id/:info',adminctrl.debtOfMonths) 
-.get('/paymonthstudent/:id/:month/:info',adminctrl.debtOfMonth) 
+.get('/studentsof/:id',adminctrl.studentsOf)//get all students from the incharge
+.get('/paymentstudent/:id',adminctrl.debtOfYear) 
+.get('/paymentstudent/:id/:year/:info',adminctrl.debtOfYear) 
+.get('/paymentstudent/:id/:month/:info',adminctrl.debtOfMonth) 
 
 //-----------------------------------------------------------------------------------------------------------------------
  

@@ -13,9 +13,6 @@ const payment = {
     //post C-reate
     async create(req,res){
         try {
-
-            //nodes:[{id:req.body.nodes.id}],
-
             const err = validationResult(req)
             if(err.isEmpty()){
 
@@ -41,7 +38,7 @@ const payment = {
     res.status(200).json({payment})
     },
     async search(req, res){//arreglar problema de que lo encuentra pero lo muestra como nulo, o status 202 result null
-        const payment = await PaymentStu.findOne({month})
+        const payment = await PaymentStu.find({month:req.params.month})
     res.status(200).json({payment})
     },
 
@@ -50,15 +47,7 @@ const payment = {
     try {
         const err = validationResult(req)
         if(err.isEmpty()){
-            await PaymentStu.findByIdAndUpdate(req.params.id,{
-                "year":req.body.year,
-                "months":[{
-                "paid":req.body.paid,
-                "quota_number":req.body.quota_number,
-                "quota_value":req.body.quota_value,
-                }],
-                "_idstudent":req.body._idstudent
-            })
+            await PaymentStu.findByIdAndUpdate(req.params.id,req.body)
             res.status(201).json({msg:"info updated"})
         } else {
             res.status(501).json(err)
@@ -70,17 +59,17 @@ const payment = {
 
     //delete D-elete
     async delete(req, res){
-    try {
-        const err = validationResult(req)
-        if(err.isEmpty()){
-            payment = await PaymentStu.findByIdAndDelete(req.params.id)
-            res.status(201).json({msg:"paid month deleted", payment})
-        } else {
-            res.status(501).json(err)
+        try {
+            const err = validationResult(req)
+            if(err.isEmpty()){
+                const payment = await PaymentStu.findByIdAndDelete(req.params.id)
+                res.status(201).json({msg:"paid month deleted"})
+            } else {
+                res.status(501).json(err)
+            }
+        }catch(error){
+            res.status(501).json({error})
         }
-    }catch(error){
-        res.status(501).json({error})
-    }
     },
 
 }
@@ -98,13 +87,13 @@ const adminctrl = {
     },
     
     async debtOfMonth(req, res){   
-        const student_paymonth = await PaymentStu.find({_idstudent:req.params.id, month:req.params.month},`${req.params.info}`) 
-        res.status(200).json({student_paymonth})  
+        const student_payment = await PaymentStu.find({_idstudent:req.params.id,month:req.params.month},`${req.params.info}`) 
+        res.status(200).json({student_payment})  
     },
 
-    async debtOfMonths(req, res){  
-        const student_paymonth = await PaymentStu.find({_idstudent:req.params.id},`${req.params.info}`) 
-        res.status(200).json({student_paymonth})  
+    async debtOfYear(req, res){  
+        const student_payment = await PaymentStu.find({_idstudent:req.params.id,year:req.params.year},`${req.params.info}`) 
+        res.status(200).json({student_payment})  
     }
     
 }

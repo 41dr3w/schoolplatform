@@ -13,10 +13,6 @@ const paymentstu = new Schema ({
             type:String,
             required:false
         },
-        paid:{
-            type:Boolean,
-            required:false
-        },
         quota_number:{
             type:String, 
             required:false
@@ -24,7 +20,8 @@ const paymentstu = new Schema ({
         quota_value:{
             type:String,
             required:false
-        }}],
+        }
+    }],
     _idstudent:{
         type: Schema.Types.ObjectId,
         ref: Student
