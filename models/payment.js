@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 
 const paymentstu = new Schema ({
     year:{
-        type:String,
+        type:Number,
         required:true
     },
     months:[{
@@ -14,11 +14,11 @@ const paymentstu = new Schema ({
             required:false
         },
         quota_number:{
-            type:String, 
+            type:Number, 
             required:false
         },
         quota_value:{
-            type:String,
+            type:Number,
             required:false
         }
     }],

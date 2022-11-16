@@ -1,19 +1,21 @@
-/*
-const {PaymentStu} = require("../models/payment")
 
-const is = async (req,res,next)=>{
-    const item = await InCharge.findById(req.body._idInCharge1)/*||req.body._idInCharge2)*/
- /*   if(item != null){
-        next();
-    } else {
-        res.json({msg:"id invalido"})
+const normalizeEmpty = (req, res, next) => {
+
+    err
+
+    try {
+        const year = req.params.year
+        if(year.toString().length==4){next()}
+        else { 
+            if(year==""||year==null){ //una es persona y otra es persona
+                req.params.year=2022  //Date.year.toString()
+            }
+        }
+    next()
+    } catch (error) {
+        res.status(500).json(error)
     }
-
-
-
-async debtOfYear(req, res){  
-    const student_payment = await PaymentStu.find({_idstudent:req.params.id,year:req.params.year},`${req.params.info}`) 
-    res.status(200).json({student_payment})  
+    
 }
 
-*/
+module.exports = {normalizeEmpty}
