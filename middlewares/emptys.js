@@ -1,19 +1,23 @@
+const { validationResult } = require("express-validator")
 
-const normalizeEmpty =  async (req, res, next) => {
+const normalizeEmpty = (req, res, next) => {
+
+    const error = validationResult(req.params)
+
     try {
-        
-        const year = req.params.year
-        if(year.toString().length==4){next()}
-        else { 
-            if(year==""||year==null){ //una es persona y otra es persona
-                req.params.year=2022  //Date.year.toString()
-            }
+        if(error.isEmpty()){
+            const year = req.query.year 
+                if(year==="0"){ //una es persona y otra es persona
+                    req.params.year=2022  //Date.year.toString()
+                }
+            next(); return
         }
-        next()    
-    } catch (err) {
-        res.status(500).json(`msg:${err}`)
+        else res.status(500).json({error})
+    } catch (error) {
+        res.status(500).json({error})
     } 
     next() 
+    return
 }
 
 module.exports = {normalizeEmpty}

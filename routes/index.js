@@ -2,7 +2,6 @@ const express = require("express")
 const router = express.Router()
 const {payment, adminctrl} = require("../controllers/")
 const {validaridpmt} = require("../middlewares/validarid")
-const { normalizeEmpty } = require("../middlewares/emptys")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
@@ -16,7 +15,7 @@ const auth = require("../middlewares/auth")
 router
 .get('/studentsof/:id',adminctrl.studentsOf)//get all students from the incharge
 .get('/paymentstudent/:id',adminctrl.debtOfYear) 
-.get('/paymentstudent/:id/:year/:info',normalizeEmpty,adminctrl.debtOfYear)
+.get('/paymentstudent/:id/:info/:year',[check("year").isNumeric().isLength({min:4,max:4})],adminctrl.debtOfYear) //
 .get('/paymentstudent/:id/:month/:info',adminctrl.debtOfMonth) 
 
 //-----------------------------------------------------------------------------------------------------------------------

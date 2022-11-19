@@ -88,7 +88,7 @@ const adminctrl = {
     
     async debtOfMonth(req, res){   
         const student_payment = await PaymentStu.find({_idstudent:req.params.id,months:req.params.months},`${req.params.info}`) 
-        res.status(200).json({student_payment})  
+        res.json({student_payment})  
     },
 
     async debtOfYear(req, res){  
