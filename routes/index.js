@@ -14,8 +14,7 @@ const auth = require("../middlewares/auth")
 
 router
 .get('/studentsof/:id',adminctrl.studentsOf)//get all students from the incharge
-.get('/paymentstudent/:id',adminctrl.debtOfYear) 
-.get('/paymentstudent/:id/:info/:year',[check("year").isNumeric().isLength({min:4,max:4})],adminctrl.debtOfYear) //
+.get('/paymentstudent/:id/:info/:year',[check("year").isNumeric().isLength({min:4,max:4})],adminctrl.debtOfYear) 
 .get('/paymentstudent/:id/:month/:info',adminctrl.debtOfMonth) 
 
 //-----------------------------------------------------------------------------------------------------------------------
