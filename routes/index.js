@@ -1,7 +1,8 @@
 const express = require("express")
 const router = express.Router()
 const {payment, adminctrl} = require("../controllers/")
-const {validaridpmt} = require("../middlewares/validarid")
+const {validaridpmt, validaridstu} = require("../middlewares/validarid")
+const {searchidpas} = require("../middlewares/searchid")
 const {check} = require("express-validator")
 const auth = require("../middlewares/auth")
 
@@ -23,10 +24,15 @@ router
 
 .get('/seeallpayments',payment.seeAll)   
 .get('/payment/:id',validaridpmt,payment.seeOne)
-.get('/searchpayment/:month',payment.search) //probar
-.post('/payment',payment.create)
-.put('/payment/:id',validaridpmt,payment.edit) //add middleware
-.delete('/payment/:id',validaridpmt,payment.delete);  //add middleware
+.get('/searchpayment/:month',payment.search) 
+
+.post('/payment',[check("year").isNumeric().isLength({min:4,max:4}),
+                  check("_idstudent").isAlphanumeric().isLength({min:24,max:24})],searchidpas,payment.create)
+
+.put('/payment/:id',validaridpmt,payment.edit) /* ,[check("year").isNumeric().isLength({min:4,max:4}),
+check("_idstudent").isAlphanumeric().isLength({min:24,max:24})],searchidpas*/
+
+.delete('/payment/:id',validaridpmt,payment.delete); 
 
 //------------------------------------------------------------------------------------------------------------------------
 /*

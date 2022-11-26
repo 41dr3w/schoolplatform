@@ -8,7 +8,7 @@ const validaridstu = async (req,res,next)=>{
     if(item != null){
         next();
     } else {
-        res.json({msg:"id invalido"})
+        res.json({msg:"id del estudiante invalido"})
     }
 }
 
@@ -17,7 +17,7 @@ const validaridinc = async (req,res,next)=>{
     if(item != null){
         next();
     } else {
-        res.json({msg:"id invalido"})
+        res.json({msg:"id del responsable invalido"})
     }
 }    
 
@@ -26,7 +26,7 @@ const validaridpmt = async (req,res,next)=>{
     if(item != null){
         next();
     } else {
-        res.json({msg:"id invalido"})
+        res.json({msg:"id de pago invalido"})
     }
 }    
 
@@ -35,8 +35,9 @@ const validaridadm = async (req,res,next)=>{
     if(item != null){
         next();
     } else {
-        res.json({msg:"id invalido"})
+        res.json({msg:"id de admin invalido"})
     }
+    next();
 }  
 
 

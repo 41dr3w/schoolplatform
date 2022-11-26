@@ -7,16 +7,17 @@ const searchidinc = async (req,res,next)=>{
     if(item != null){
         next();
     } else {
-        res.json({msg:"id invalido"})
+        res.json({msg:"id del responsable invalido"})
     }
 }
 
-const searchidpas = async (req,res,next)=>{
+const searchidpas = async (err,req,res,next)=>{
+    
     const item = await Student.findById(req.body._idstudent)/*||anotheroption)*/
     if(item != null){
         next();
     } else {
-        res.json({msg:"id invalido"})
+        res.json({msg:"id del estudiante invalido"})
     }
 }
 
@@ -25,7 +26,7 @@ const searchidpmt = async (req,res,next)=>{
     if(item != null){
         next();
     } else {
-        res.json({msg:"id invalido"})
+        res.json({msg:"id de pago invalido"})
     }
 }
 

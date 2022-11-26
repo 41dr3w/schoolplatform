@@ -36,7 +36,7 @@ const student = new Schema ({
         },
         relation_InCharge:{
             type:String,
-            required:true
+            required:false
         },
         _idInCharge:[{
             type: Schema.Types.ObjectId,    
