@@ -6,4 +6,7 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
   }) 
 
- 
+ // Create GET request
+app.get("/", (req, res) => {
+  res.send("Server's running and DB connect it, go to the link to see the documentation and use the api server");
+});
