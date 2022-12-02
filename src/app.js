@@ -6,7 +6,7 @@ const session = require("express-session")
 
 const app = express()
 
-const indexRouter = require("../routes")
+const indexRouter = require("../routes/index")
 const sistemRouter = require("../routes/ctrlsistem")
 const personalRouter = require("../routes/personal")
 const { conect } = require("../db/db")
